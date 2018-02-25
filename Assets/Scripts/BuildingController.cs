@@ -3,8 +3,18 @@ using UnityEngine;
 
 public class BuildingController : MonoBehaviour
 {
+    static int IdGenerator;
+
     const float CrushingSpeed = 10f;
     const float ShakingMagnitude = 1f;
+
+    public int id { get; private set; }
+
+    void Start()
+    {
+        id = ++IdGenerator;
+        GameControl.instance.RegisterBuilding(this);
+    }
 
     public void ReceiveDamage()
     {
@@ -23,6 +33,7 @@ public class BuildingController : MonoBehaviour
                 startZ + Random.Range(0f, ShakingMagnitude));
             yield return null;
         }
+        GameControl.instance.UnregisterBuilding(this);
         Destroy(gameObject, 1f);
     }
 }

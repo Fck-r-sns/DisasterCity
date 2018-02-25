@@ -24,7 +24,8 @@ public class DragonController : MonoBehaviour
     const float AngularSpeed = 120f;
     const float AttackDistance = 20f;
     const float TargetUpdatePeriod = 1f;
-    const float AttackPeriod = 1f;
+    const float AttackPeriod = 3f;
+    const float RageAttackPeriod = 1f;
     const float RageDuration = 10f;
 
     [SerializeField]
@@ -39,7 +40,7 @@ public class DragonController : MonoBehaviour
     DragonAttackCollider _rightClawAttackCollider;
 
     Dictionary<int, Tank> _units = new Dictionary<int, Tank>();
-    Tank _target;
+    Transform _target;
     float _lastTargetUpdateTime;
     float _lastAttackTime;
     float _lastDefendTime;
@@ -56,7 +57,7 @@ public class DragonController : MonoBehaviour
 
     void Start()
     {
-        _units = UnitsControl.instance.GetUnits();
+        _units = GameControl.instance.GetUnits();
 
         _generalHealth = 2500f;
         _bodyPartsHealth = new Dictionary<BodyPart, float>
@@ -101,29 +102,31 @@ public class DragonController : MonoBehaviour
                 }
             }
 
-            if (_target == null || minDistance < Vector3.Distance(transform.position, _target.transform.position))
-                _target = nearestUnit;
+            if (_target == null || minDistance < Vector3.Distance(transform.position, _target.position))
+                _target = nearestUnit.transform;
         }
 
         if (_target != null)
         {
-            float distanceToTarget = Vector3.Distance(transform.position, _target.transform.position);
+            float distanceToTarget = Vector3.Distance(transform.position, _target.position);
             if (distanceToTarget > AttackDistance)
             {
-                if ((_navMeshAgent.destination - _target.transform.position).sqrMagnitude > 0.01f)
+                if ((_navMeshAgent.destination - _target.position).sqrMagnitude > 0.01f)
                 {
                     if (_isRage)
-                        RunTo(_target.transform.position);
+                        RunTo(_target.position);
                     else
-                        WalkTo(_target.transform.position);
+                        WalkTo(_target.position);
                 }
             }
             else
             {
                 Stop();
-                Vector3 rotationDir = Vector3.RotateTowards(transform.forward, _target.transform.position - transform.position, Time.deltaTime * AngularSpeed, 0f);
+                Vector3 rotationDir = Vector3.RotateTowards(transform.forward, _target.position - transform.position, 
+                    Time.deltaTime * AngularSpeed * Mathf.Deg2Rad, 0f);
                 transform.rotation = Quaternion.LookRotation(rotationDir);
-                if (Time.time - _lastAttackTime > AttackPeriod && Vector3.Distance(transform.position, _target.transform.position) <= AttackDistance)
+                float attackPeriod = _isRage ? RageAttackPeriod : AttackPeriod;
+                if (Time.time - _lastAttackTime > attackPeriod && Vector3.Distance(transform.position, _target.position) <= AttackDistance)
                 {
                     _lastAttackTime = Time.time;
                     Attack();

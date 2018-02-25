@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class UnitsControl : MonoBehaviour
+public class GameControl : MonoBehaviour
 {
-    static UnitsControl _instance;
+    static GameControl _instance;
 
-    public static UnitsControl instance { get { return _instance; } }
+    public static GameControl instance { get { return _instance; } }
 
     [SerializeField]
     GameObject _tankPrefab;
@@ -15,6 +15,7 @@ public class UnitsControl : MonoBehaviour
     Dictionary<int, Tank> _totalUnits = new Dictionary<int, Tank>();
     Dictionary<int, Tank> _selectedUnits = new Dictionary<int, Tank>();
     Dictionary<int, Tank> _frameSelectionBuffer = new Dictionary<int, Tank>();
+    Dictionary<int, BuildingController> _buildings = new Dictionary<int, BuildingController>();
 
     void Awake()
     {
@@ -31,6 +32,15 @@ public class UnitsControl : MonoBehaviour
             {
                 if (Physics.Raycast(ray, out hit, float.MaxValue, LayerMask.GetMask("Ground")))
                     Instantiate(_tankPrefab, hit.point, Quaternion.identity);
+            }
+            else if (Input.GetKey(KeyCode.E))
+            {
+                if (Physics.Raycast(ray, out hit, float.MaxValue, LayerMask.GetMask("Buildings")))
+                {
+                    BuildingDamageReceiver building = hit.collider.GetComponent<BuildingDamageReceiver>();
+                    if (building != null)
+                        building.ReceiveDamage();
+                }
             }
             else
             {
@@ -83,9 +93,24 @@ public class UnitsControl : MonoBehaviour
         _frameSelectionBuffer.Remove(unit.id);
     }
 
+    public void RegisterBuilding(BuildingController building)
+    {
+        _buildings.Add(building.id, building);
+    }
+
+    public void UnregisterBuilding(BuildingController building)
+    {
+        _buildings.Remove(building.id);
+    }
+
     public Dictionary<int, Tank> GetUnits()
     {
         return _totalUnits;
+    }
+
+    public Dictionary<int, BuildingController> GetBuildings()
+    {
+        return _buildings;
     }
 
     public DragonController GetMonster()

@@ -52,8 +52,8 @@ public class Tank : MonoBehaviour
         _movementPointer.gameObject.SetActive(false);
         Destroy(_movementPointer.GetComponent<Collider>());
 
-        UnitsControl.instance.RegisterUnit(this);
-        _monster = UnitsControl.instance.GetMonster();
+        GameControl.instance.RegisterUnit(this);
+        _monster = GameControl.instance.GetMonster();
         _shootingTarget = _monster.GetChest();
 
         _navMeshAgent = GetComponent<NavMeshAgent>();
@@ -123,7 +123,7 @@ public class Tank : MonoBehaviour
 
     public void ReceiveAttack()
     {
-        UnitsControl.instance.UnregisterUnit(this);
+        GameControl.instance.UnregisterUnit(this);
         GameObject explosion = Instantiate(_explosionsPrefabs[Random.Range(0, _explosionsPrefabs.Length)], transform.position, Quaternion.identity);
         explosion.transform.localScale = Vector3.one * 10f;
         Destroy(gameObject);

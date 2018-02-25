@@ -13,12 +13,14 @@ GameObject:
   - component: {fileID: 65605874329764288}
   - component: {fileID: 54733997556034486}
   - component: {fileID: 114154787382134886}
+  - component: {fileID: 208781821875403428}
+  - component: {fileID: 114902823447614174}
   m_Layer: 13
   m_Name: 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_NavMeshLayer: 2
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!4 &434050
 Transform:
@@ -27,7 +29,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 105450}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 18.461555, y: 6.68, z: -161.29999}
+  m_LocalPosition: {x: 18.86155, y: 6.68, z: 137.39323}
   m_LocalScale: {x: 0.26832023, y: 0.2683201, z: 0.2683201}
   m_Children: []
   m_Father: {fileID: 0}
@@ -124,3 +126,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc80f2c6aa832fc48a80500160542a96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114902823447614174
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 105450}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 152eafa5d79840d42997b75d881c2f1e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!208 &208781821875403428
+NavMeshObstacle:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 105450}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 13.291, y: 25.051, z: 10.383}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.5

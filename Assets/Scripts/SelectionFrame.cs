@@ -13,7 +13,7 @@ public class SelectionFrame : Graphic, IBeginDragHandler, IDragHandler, IEndDrag
             return;
 
         _frame.gameObject.SetActive(true);
-        UnitsControl.instance.BeginFrameSelection();
+        GameControl.instance.BeginFrameSelection();
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -30,7 +30,7 @@ public class SelectionFrame : Graphic, IBeginDragHandler, IDragHandler, IEndDrag
         Rect rect = _frame.rect;
         rect.x = x;
         rect.y = y;
-        UnitsControl.instance.UpdateFrameSelection(rect);
+        GameControl.instance.UpdateFrameSelection(rect);
     }
 
     public void OnEndDrag(PointerEventData eventData)
@@ -39,6 +39,6 @@ public class SelectionFrame : Graphic, IBeginDragHandler, IDragHandler, IEndDrag
             return;
 
         _frame.gameObject.SetActive(false);
-        UnitsControl.instance.EndFrameSelection();
+        GameControl.instance.EndFrameSelection();
     }
 }
