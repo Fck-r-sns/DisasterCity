@@ -14,8 +14,8 @@ public class BuildingDamageReceiver : MonoBehaviour
         }
     }
 
-    public void ReceiveDamage()
+    public void ReceiveAttack()
     {
-        _buildingController.ReceiveDamage();
+        _buildingController.ReceiveAttack();
     }
 }

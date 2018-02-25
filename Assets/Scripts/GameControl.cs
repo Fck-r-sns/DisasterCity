@@ -39,7 +39,7 @@ public class GameControl : MonoBehaviour
                 {
                     BuildingDamageReceiver building = hit.collider.GetComponent<BuildingDamageReceiver>();
                     if (building != null)
-                        building.ReceiveDamage();
+                        building.ReceiveAttack();
                 }
             }
             else
@@ -60,7 +60,7 @@ public class GameControl : MonoBehaviour
                             unit.SetSelected(true);
                         }
 
-                        if (unit.selected)
+                        if (unit.isSelected)
                             _selectedUnits[unit.id] = unit;
                         else
                             _selectedUnits.Remove(unit.id);

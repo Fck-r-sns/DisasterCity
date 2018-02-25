@@ -9,6 +9,7 @@ public class BuildingController : MonoBehaviour
     const float ShakingMagnitude = 1f;
 
     public int id { get; private set; }
+    public bool isDestroyed { get; private set; }
 
     void Start()
     {
@@ -16,9 +17,21 @@ public class BuildingController : MonoBehaviour
         GameControl.instance.RegisterBuilding(this);
     }
 
-    public void ReceiveDamage()
+    public void ReceiveAttack()
     {
+        DisableRigidbodies(transform);
+        isDestroyed = true;
+        GameControl.instance.UnregisterBuilding(this);
         StartCoroutine(CrushingProcess());
+    }
+
+    void DisableRigidbodies(Transform transform)
+    {
+        var rb = transform.GetComponent<Rigidbody>();
+        if (rb != null)
+            rb.isKinematic = true;
+        foreach (Transform child in transform)
+            DisableRigidbodies(child);
     }
 
     IEnumerator CrushingProcess()
@@ -33,7 +46,6 @@ public class BuildingController : MonoBehaviour
                 startZ + Random.Range(0f, ShakingMagnitude));
             yield return null;
         }
-        GameControl.instance.UnregisterBuilding(this);
         Destroy(gameObject, 1f);
     }
 }

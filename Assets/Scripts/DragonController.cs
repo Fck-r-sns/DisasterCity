@@ -19,14 +19,35 @@ public class DragonController : MonoBehaviour
         RightWing,
     }
 
+    enum MovementState
+    {
+        Stop,
+        Walk,
+        Run,
+    }
+
+    enum BehaviorState
+    {
+        DestroyCity,
+        AttackEnemies,
+    }
+
+    const bool ShowMovementPointer = false;
+    const float CityWidth = 320f;
+    const float CityHeight = 320f;
     const float WalkingSpeed = 15f;
     const float RunningSpeed = 100f;
     const float AngularSpeed = 120f;
-    const float AttackDistance = 20f;
+    const float AttackDistance = 30f;
     const float TargetUpdatePeriod = 1f;
     const float AttackPeriod = 3f;
     const float RageAttackPeriod = 1f;
     const float RageDuration = 10f;
+    const float TimeBetweenBeingAttackedAndStartPatroling = 5f;
+    const float MinAttackBuildingPeriod = 5f;
+    const float MaxAttackBuildingPeriod = 10f;
+    const float MinDefendPeriod = 5f;
+    const float MaxDefendPeriod = 15f;
 
     [SerializeField]
     Animator _animator;
@@ -39,14 +60,21 @@ public class DragonController : MonoBehaviour
     [SerializeField]
     DragonAttackCollider _rightClawAttackCollider;
 
-    Dictionary<int, Tank> _units = new Dictionary<int, Tank>();
+    Dictionary<int, Tank> _units;
+    Dictionary<int, BuildingController> _buildings;
+    Transform _movementPointer;
+    Vector3? _patrolingPosition;
     Transform _target;
+    float _nextBuildingAttackTime;
+    float _lastReceivedDamageTime = -float.MaxValue;
     float _lastTargetUpdateTime;
     float _lastAttackTime;
     float _lastDefendTime;
     float _timeToNextDefend;
     float _rageStopTime;
     NavMeshAgent _navMeshAgent;
+    MovementState _movementState;
+    BehaviorState _behaviorState;
 
     float _generalHealth;
     Dictionary<BodyPart, float> _bodyPartsHealth;
@@ -58,6 +86,7 @@ public class DragonController : MonoBehaviour
     void Start()
     {
         _units = GameControl.instance.GetUnits();
+        _buildings = GameControl.instance.GetBuildings();
 
         _generalHealth = 2500f;
         _bodyPartsHealth = new Dictionary<BodyPart, float>
@@ -77,6 +106,15 @@ public class DragonController : MonoBehaviour
         _navMeshAgent = GetComponent<NavMeshAgent>();
         _navMeshAgent.speed = WalkingSpeed;
         _navMeshAgent.angularSpeed = AngularSpeed;
+
+        if (ShowMovementPointer)
+        {
+            _movementPointer = GameObject.CreatePrimitive(PrimitiveType.Cylinder).transform;
+            _movementPointer.localScale = new Vector3(0.3f, 150f, 0.3f);
+            _movementPointer.position = new Vector3(0f, 75f, 0f);
+            _movementPointer.gameObject.SetActive(false);
+            Destroy(_movementPointer.GetComponent<Collider>());
+        }
     }
 
     void Update()
@@ -87,24 +125,19 @@ public class DragonController : MonoBehaviour
         if (_isRage && Time.time >= _rageStopTime)
             _isRage = false;
 
-        if (Time.time - _lastTargetUpdateTime > TargetUpdatePeriod)
+        BehaviorState newBehaviorState = Time.time - _lastReceivedDamageTime >= TimeBetweenBeingAttackedAndStartPatroling ?
+            BehaviorState.DestroyCity : BehaviorState.AttackEnemies;
+        if (_behaviorState != newBehaviorState)
         {
-            _lastTargetUpdateTime = Time.time;
-            Tank nearestUnit = null;
-            float minDistance = float.MaxValue;
-            foreach (var kv in _units)
-            {
-                float dst = Vector3.Distance(transform.position, kv.Value.transform.position);
-                if (nearestUnit == null || dst < minDistance)
-                {
-                    nearestUnit = kv.Value;
-                    minDistance = dst;
-                }
-            }
-
-            if (_target == null || minDistance < Vector3.Distance(transform.position, _target.position))
-                _target = nearestUnit.transform;
+            _behaviorState = newBehaviorState;
+            _patrolingPosition = null;
+            _target = null;
         }
+
+        if (_behaviorState == BehaviorState.DestroyCity)
+            ProcessDestroyCityState();
+        else if (_behaviorState == BehaviorState.AttackEnemies)
+            ProcessAttackUnitsState();
 
         if (_target != null)
         {
@@ -122,7 +155,7 @@ public class DragonController : MonoBehaviour
             else
             {
                 Stop();
-                Vector3 rotationDir = Vector3.RotateTowards(transform.forward, _target.position - transform.position, 
+                Vector3 rotationDir = Vector3.RotateTowards(transform.forward, _target.position - transform.position,
                     Time.deltaTime * AngularSpeed * Mathf.Deg2Rad, 0f);
                 transform.rotation = Quaternion.LookRotation(rotationDir);
                 float attackPeriod = _isRage ? RageAttackPeriod : AttackPeriod;
@@ -133,9 +166,76 @@ public class DragonController : MonoBehaviour
                 }
             }
         }
+        else if (_patrolingPosition.HasValue)
+        {
+            WalkTo(_patrolingPosition.Value);
+        }
         else
         {
-            _animator.SetBool("IsWalking", false);
+            Stop();
+        }
+    }
+
+    public void ProcessDestroyCityState()
+    {
+        if (_target != null)
+        {
+            BuildingController building = _target.GetComponent<BuildingController>();
+            if (building != null && building.isDestroyed)
+                _target = null;
+        }
+
+        if (_patrolingPosition.HasValue && Vector3.Distance(transform.position, _patrolingPosition.Value) < 30f)
+            _patrolingPosition = null;
+
+        if (!_patrolingPosition.HasValue)
+        {
+            _patrolingPosition = new Vector3(
+                Random.Range(-CityWidth / 2f, CityWidth / 2f),
+                0f,
+                Random.Range(-CityHeight / 2f, CityHeight / 2f));
+        }
+
+        if (Time.time >= _nextBuildingAttackTime)
+        {
+            _nextBuildingAttackTime = Time.time + Random.Range(MinAttackBuildingPeriod, MaxAttackBuildingPeriod);
+
+            BuildingController nearestBuilding = null;
+            float minDistance = float.MaxValue;
+            foreach (var kv in _buildings)
+            {
+                float dst = Vector3.Distance(transform.position, kv.Value.transform.position);
+                if (nearestBuilding == null || dst < minDistance)
+                {
+                    nearestBuilding = kv.Value;
+                    minDistance = dst;
+                }
+            }
+
+            if (nearestBuilding != null && (_target == null || minDistance < Vector3.Distance(transform.position, _target.position)))
+                _target = nearestBuilding.transform;
+        }
+    }
+
+    public void ProcessAttackUnitsState()
+    {
+        if (Time.time - _lastTargetUpdateTime > TargetUpdatePeriod)
+        {
+            _lastTargetUpdateTime = Time.time;
+            Tank nearestUnit = null;
+            float minDistance = float.MaxValue;
+            foreach (var kv in _units)
+            {
+                float dst = Vector3.Distance(transform.position, kv.Value.transform.position);
+                if (nearestUnit == null || dst < minDistance)
+                {
+                    nearestUnit = kv.Value;
+                    minDistance = dst;
+                }
+            }
+
+            if (nearestUnit != null && (_target == null || minDistance < Vector3.Distance(transform.position, _target.position)))
+                _target = nearestUnit.transform;
         }
     }
 
@@ -166,6 +266,8 @@ public class DragonController : MonoBehaviour
         }
 
         _generalHealth -= generalDamage;
+        _lastReceivedDamageTime = Time.time;
+
         if (_generalHealth <= 0f)
             Die();
         else
@@ -174,25 +276,57 @@ public class DragonController : MonoBehaviour
 
     void WalkTo(Vector3 position)
     {
-        _navMeshAgent.speed = WalkingSpeed;
-        _navMeshAgent.destination = position;
-        _animator.SetBool("IsRunning", false);
-        _animator.SetBool("IsWalking", true);
+        if (_movementState != MovementState.Walk)
+        {
+            _movementState = MovementState.Walk;
+            _animator.SetBool("IsRunning", false);
+            _animator.SetBool("IsWalking", true);
+            _navMeshAgent.speed = WalkingSpeed;
+        }
+
+        if ((_navMeshAgent.destination - position).sqrMagnitude > 0.01f)
+            _navMeshAgent.destination = position;
+
+        if (ShowMovementPointer)
+        {
+            _movementPointer.position = position;
+            _movementPointer.gameObject.SetActive(true);
+        }
     }
 
     void RunTo(Vector3 position)
     {
-        _navMeshAgent.speed = RunningSpeed;
-        _navMeshAgent.destination = position;
-        _animator.SetBool("IsWalking", false);
-        _animator.SetBool("IsRunning", true);
+        if (_movementState != MovementState.Run)
+        {
+            _movementState = MovementState.Run;
+            _navMeshAgent.speed = RunningSpeed;
+            _animator.SetBool("IsWalking", false);
+            _animator.SetBool("IsRunning", true);
+        }
+
+        if ((_navMeshAgent.destination - position).sqrMagnitude > 0.01f)
+            _navMeshAgent.destination = position;
+
+        if (ShowMovementPointer)
+        {
+            _movementPointer.position = position;
+            _movementPointer.gameObject.SetActive(true);
+        }
     }
 
     void Stop()
     {
+        if (_movementState != MovementState.Stop)
+        {
+            _movementState = MovementState.Stop;
+            _animator.SetBool("IsWalking", false);
+            _animator.SetBool("IsRunning", false);
+        }
+
         _navMeshAgent.destination = transform.position;
-        _animator.SetBool("IsWalking", false);
-        _animator.SetBool("IsRunning", false);
+
+        if (ShowMovementPointer)
+            _movementPointer.gameObject.SetActive(false);
     }
 
     void Attack()
@@ -278,7 +412,7 @@ public class DragonController : MonoBehaviour
         else if (Time.time >= _lastDefendTime + _timeToNextDefend)
         {
             _lastDefendTime = Time.time;
-            _timeToNextDefend = Random.Range(5f, 15f);
+            _timeToNextDefend = Random.Range(MinDefendPeriod, MaxDefendPeriod);
             if (!_isRage && !_isScreaming)
             {
                 Stop();

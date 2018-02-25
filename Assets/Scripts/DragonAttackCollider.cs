@@ -4,8 +4,15 @@ public class DragonAttackCollider : MonoBehaviour
 {
     void OnCollisionEnter(Collision collision)
     {
-        var tank = collision.contacts[0].otherCollider.GetComponent<Tank>();
-        if (tank != null)
-            tank.ReceiveAttack();
+        foreach (var contact in collision.contacts)
+        {
+            var tank = contact.otherCollider.GetComponent<Tank>();
+            if (tank != null)
+                tank.ReceiveAttack();
+
+            var building = contact.otherCollider.GetComponent<BuildingDamageReceiver>();
+            if (building != null)
+                building.ReceiveAttack();
+        }
     }
 }

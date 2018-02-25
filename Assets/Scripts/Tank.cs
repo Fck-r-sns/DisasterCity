@@ -6,7 +6,8 @@ public class Tank : MonoBehaviour
     static int IdGenerator;
 
     public int id { get; private set; }
-    public bool selected { get { return _isSelected; } }
+    public bool isSelected { get { return _isSelected; } }
+    public bool isDestroyed { get; private set; }
 
     [SerializeField]
     float _speed = 10f;
@@ -37,7 +38,7 @@ public class Tank : MonoBehaviour
     DragonController _monster;
     Transform _shootingTarget;
     float _yOffset;
-    float _targetPointerYOffset;
+    float _movementPointerYOffset;
     float _lastShotTime;
     NavMeshAgent _navMeshAgent;
 
@@ -48,7 +49,7 @@ public class Tank : MonoBehaviour
         _movementPointer = GameObject.CreatePrimitive(PrimitiveType.Cylinder).transform;
         _movementPointer.localScale = new Vector3(0.3f, 1f, 0.3f);
         _movementPointer.position = new Vector3(0f, 0.5f, 0f);
-        _targetPointerYOffset = _movementPointer.position.y;
+        _movementPointerYOffset = _movementPointer.position.y;
         _movementPointer.gameObject.SetActive(false);
         Destroy(_movementPointer.GetComponent<Collider>());
 
@@ -77,7 +78,7 @@ public class Tank : MonoBehaviour
     {
         position.y = _yOffset;
         _movementPosition = position;
-        position.y = _targetPointerYOffset;
+        position.y = _movementPointerYOffset;
         _movementPointer.position = position;
         _movementPointer.gameObject.SetActive(true);
 
@@ -123,6 +124,7 @@ public class Tank : MonoBehaviour
 
     public void ReceiveAttack()
     {
+        isDestroyed = true;
         GameControl.instance.UnregisterUnit(this);
         GameObject explosion = Instantiate(_explosionsPrefabs[Random.Range(0, _explosionsPrefabs.Length)], transform.position, Quaternion.identity);
         explosion.transform.localScale = Vector3.one * 10f;
