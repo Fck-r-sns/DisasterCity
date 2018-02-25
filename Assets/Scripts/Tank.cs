@@ -108,8 +108,16 @@ public class Tank : MonoBehaviour
 
             if (Time.time - _lastShotTime > _shootingPeriod)
             {
-                _lastShotTime = Time.time;
-                Shoot();
+                RaycastHit hit;
+                Ray ray = new Ray(_shootingPoint.position, _shootingPoint.forward);
+                if (Physics.Raycast(ray, out hit, float.MaxValue, LayerMask.GetMask("ProjectileCollider", "Buildings", "Units")))
+                {
+                    if (hit.collider.gameObject.layer == LayerMask.NameToLayer("ProjectileCollider"))
+                    {
+                        _lastShotTime = Time.time;
+                        Shoot();
+                    }
+                }
             }
         }
     }
