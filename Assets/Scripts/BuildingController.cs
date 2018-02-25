@@ -19,6 +19,9 @@ public class BuildingController : MonoBehaviour
 
     public void ReceiveAttack()
     {
+        if (isDestroyed)
+            return;
+
         DisableRigidbodies(transform);
         isDestroyed = true;
         GameControl.instance.UnregisterBuilding(this);

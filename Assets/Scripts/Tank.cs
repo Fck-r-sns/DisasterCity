@@ -132,6 +132,9 @@ public class Tank : MonoBehaviour
 
     public void ReceiveAttack()
     {
+        if (isDestroyed)
+            return;
+
         isDestroyed = true;
         GameControl.instance.UnregisterUnit(this);
         GameObject explosion = Instantiate(_explosionsPrefabs[Random.Range(0, _explosionsPrefabs.Length)], transform.position, Quaternion.identity);

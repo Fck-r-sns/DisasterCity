@@ -43,7 +43,7 @@ public class DragonController : MonoBehaviour
     const float AttackPeriod = 3f;
     const float RageAttackPeriod = 1f;
     const float RageDuration = 10f;
-    const float TimeBetweenBeingAttackedAndStartPatroling = 5f;
+    const float TimeBetweenBeingAttackedAndStartPatroling = 3f;
     const float MinAttackBuildingPeriod = 5f;
     const float MaxAttackBuildingPeriod = 10f;
     const float MinDefendPeriod = 5f;

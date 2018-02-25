@@ -1,11 +1,19 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class GameControl : MonoBehaviour
 {
+    public class IntEvent : UnityEvent<int>
+    {
+    }
+
     static GameControl _instance;
 
     public static GameControl instance { get { return _instance; } }
+    public IntEvent onTanksCreatedCounterChanged { get; private set; }
+    public IntEvent onTanksLostCounterChanged { get; private set; }
+    public IntEvent onBuildingsLostCounterChanged { get; private set; }
 
     [SerializeField]
     GameObject _tankPrefab;
@@ -16,10 +24,16 @@ public class GameControl : MonoBehaviour
     Dictionary<int, Tank> _selectedUnits = new Dictionary<int, Tank>();
     Dictionary<int, Tank> _frameSelectionBuffer = new Dictionary<int, Tank>();
     Dictionary<int, BuildingController> _buildings = new Dictionary<int, BuildingController>();
+    int _tanksCreated;
+    int _tanksLost;
+    int _buildingsLost;
 
     void Awake()
     {
         _instance = this;
+        onTanksCreatedCounterChanged = new IntEvent();
+        onTanksLostCounterChanged = new IntEvent();
+        onBuildingsLostCounterChanged = new IntEvent();
     }
 
     void Update()
@@ -87,6 +101,8 @@ public class GameControl : MonoBehaviour
     public void RegisterUnit(Tank unit)
     {
         _totalUnits.Add(unit.id, unit);
+        _tanksCreated++;
+        onTanksCreatedCounterChanged.Invoke(_tanksCreated);
     }
 
     public void UnregisterUnit(Tank unit)
@@ -94,6 +110,8 @@ public class GameControl : MonoBehaviour
         _totalUnits.Remove(unit.id);
         _selectedUnits.Remove(unit.id);
         _frameSelectionBuffer.Remove(unit.id);
+        _tanksLost++;
+        onTanksLostCounterChanged.Invoke(_tanksLost);
     }
 
     public void RegisterBuilding(BuildingController building)
@@ -104,6 +122,8 @@ public class GameControl : MonoBehaviour
     public void UnregisterBuilding(BuildingController building)
     {
         _buildings.Remove(building.id);
+        _buildingsLost++;
+        onBuildingsLostCounterChanged.Invoke(_buildingsLost);
     }
 
     public Dictionary<int, Tank> GetUnits()
