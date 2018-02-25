@@ -24,6 +24,9 @@ public class GameControl : MonoBehaviour
 
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Space))
+            Time.timeScale = Time.timeScale == 0f ? 1f : 0f;
+
         if (Input.GetMouseButtonDown(0))
         {
             RaycastHit hit;

@@ -6,7 +6,7 @@ public class BuildingController : MonoBehaviour
     static int IdGenerator;
 
     const float CrushingSpeed = 10f;
-    const float ShakingMagnitude = 1f;
+    const float ShakingMagnitude = 25f;
 
     public int id { get; private set; }
     public bool isDestroyed { get; private set; }
@@ -41,9 +41,9 @@ public class BuildingController : MonoBehaviour
         while (transform.position.y > -100f)
         {
             transform.position = new Vector3(
-                startX + Random.Range(0f, ShakingMagnitude),
+                startX + Random.Range(0f, Time.deltaTime * ShakingMagnitude),
                 transform.position.y - Time.deltaTime * CrushingSpeed,
-                startZ + Random.Range(0f, ShakingMagnitude));
+                startZ + Random.Range(0f, Time.deltaTime * ShakingMagnitude));
             yield return null;
         }
         Destroy(gameObject, 1f);
