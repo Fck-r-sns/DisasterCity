@@ -10197,7 +10197,7 @@ GameObject:
   - component: {fileID: 980782440}
   - component: {fileID: 980782439}
   m_Layer: 5
-  m_Name: TanksLost
+  m_Name: UnitsLost
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -17124,7 +17124,7 @@ GameObject:
   - component: {fileID: 1672838580}
   - component: {fileID: 1672838579}
   m_Layer: 5
-  m_Name: TanksCreated
+  m_Name: UnitsCreated
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -17989,8 +17989,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _time: {fileID: 1542126645}
-  _tanksCreated: {fileID: 1672838579}
-  _tanksLost: {fileID: 980782439}
+  _unitsCreated: {fileID: 1672838579}
+  _unitsLost: {fileID: 980782439}
   _buildingsLost: {fileID: 491680987}
 --- !u!1001 &1792180346
 Prefab:

@@ -8,9 +8,9 @@ public class UiStats : MonoBehaviour
     [SerializeField]
     Text _time;
     [SerializeField]
-    Text _tanksCreated;
+    Text _unitsCreated;
     [SerializeField]
-    Text _tanksLost;
+    Text _unitsLost;
     [SerializeField]
     Text _buildingsLost;
 
@@ -18,7 +18,13 @@ public class UiStats : MonoBehaviour
 
     void Start()
     {
+        Game.instance.unitsManager.onUnitsCreatedCountChanged += SetUnitsCreatedCount;
+        Game.instance.unitsManager.onUnitsLostCountChanged += SetUnitsLostCount;
+        Game.instance.buildingsManager.onBuildingsLostCountChanged += SetBuildingsLostCount;
 
+        SetUnitsCreatedCount(0);
+        SetUnitsLostCount(0);
+        SetBuildingsLostCount(0);
     }
 
     void Update()
@@ -28,5 +34,20 @@ public class UiStats : MonoBehaviour
             _lastTimeUpdateTime = Time.time;
             _time.text = "Time: " + Mathf.CeilToInt(Time.time);
         }
+    }
+
+    void SetUnitsCreatedCount(int count)
+    {
+        _unitsCreated.text = "Units created: " + count;
+    }
+
+    void SetUnitsLostCount(int count)
+    {
+        _unitsLost.text = "Units lost: " + count;
+    }
+
+    void SetBuildingsLostCount(int count)
+    {
+        _buildingsLost.text = "Buldings lost: " + count;
     }
 }

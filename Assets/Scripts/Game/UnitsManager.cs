@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class UnitsManager : MonoBehaviour
@@ -6,13 +7,21 @@ public class UnitsManager : MonoBehaviour
     [SerializeField]
     GameObject _tankPrefab;
 
+    public event Action<int> onUnitsCreatedCountChanged;
+    public event Action<int> onUnitsLostCountChanged;
+
     Dictionary<int, Unit> _totalUnits = new Dictionary<int, Unit>();
     Dictionary<int, Unit> _selectedUnits = new Dictionary<int, Unit>();
     Dictionary<int, Unit> _frameSelectionBuffer = new Dictionary<int, Unit>();
+    int _unitsCreatedCount;
+    int _unitsLostCount;
 
     public void RegisterUnit(Unit unit)
     {
         _totalUnits.Add(unit.id, unit);
+        _unitsCreatedCount++;
+        if (onUnitsCreatedCountChanged != null)
+            onUnitsCreatedCountChanged(_unitsCreatedCount);
     }
 
     public void UnregisterUnit(Unit unit)
@@ -20,6 +29,9 @@ public class UnitsManager : MonoBehaviour
         _totalUnits.Remove(unit.id);
         _selectedUnits.Remove(unit.id);
         _frameSelectionBuffer.Remove(unit.id);
+        _unitsLostCount++;
+        if (onUnitsLostCountChanged != null)
+            onUnitsLostCountChanged(_unitsLostCount);
     }
 
     public Dictionary<int, Unit> GetUnits()

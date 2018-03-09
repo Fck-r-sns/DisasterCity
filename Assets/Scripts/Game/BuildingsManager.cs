@@ -1,9 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class BuildingsManager : MonoBehaviour
 {
+    public event Action<int> onBuildingsLostCountChanged;
+
     Dictionary<int, BuildingController> _buildings = new Dictionary<int, BuildingController>();
+    int _buildingsLostCount;
 
     public void RegisterBuilding(BuildingController building)
     {
@@ -13,6 +17,9 @@ public class BuildingsManager : MonoBehaviour
     public void UnregisterBuilding(BuildingController building)
     {
         _buildings.Remove(building.id);
+        _buildingsLostCount++;
+        if (onBuildingsLostCountChanged != null)
+            onBuildingsLostCountChanged(_buildingsLostCount);
     }
 
     public Dictionary<int, BuildingController> GetBuildings()
