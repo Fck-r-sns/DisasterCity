@@ -288,7 +288,10 @@ GameObject:
   m_Component:
   - component: {fileID: 4322189033385930}
   - component: {fileID: 65170366608642796}
-  - component: {fileID: 114296365523398284}
+  - component: {fileID: 114215810286687920}
+  - component: {fileID: 114849289455444606}
+  - component: {fileID: 114268172612502630}
+  - component: {fileID: 114491732128922984}
   - component: {fileID: 54413124763604106}
   - component: {fileID: 195162951402993586}
   m_Layer: 9
@@ -1770,7 +1773,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 4.2, y: 1.5849948, z: 8.035831}
   m_Center: {x: 0, y: 0.891351, z: 0.18880272}
---- !u!114 &114296365523398284
+--- !u!114 &114215810286687920
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -1778,24 +1781,60 @@ MonoBehaviour:
   m_GameObject: {fileID: 1636962970617598}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cf3d3c24953ebbf499250acd28087098, type: 3}
+  m_Script: {fileID: 11500000, guid: 36414e4f792ac1e4298ed009a318f8bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 10
-  _angularSpeed: 120
+  _movement: {fileID: 114849289455444606}
+  _attack: {fileID: 114268172612502630}
+  _defence: {fileID: 114491732128922984}
+  _selectionFrame: {fileID: 4119665885471582}
+--- !u!114 &114268172612502630
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1636962970617598}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2cbaa2302d8c776458e16ff26d0763f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   _shootingPeriod: 3
   _projectileSpeed: 40
   _projectileDamage: 10
   _towerPivot: {fileID: 4539410404807824}
   _gunPivot: {fileID: 4361787269006544}
-  _selectionFrame: {fileID: 4119665885471582}
   _shootingPoint: {fileID: 4725761805967818}
   _projectilePrefab: {fileID: 1478645935025412, guid: aa30859e8191bae4cb265e1f26a3f302,
     type: 2}
+--- !u!114 &114491732128922984
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1636962970617598}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a99acf6c540faf54390008ca0660bb61, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   _explosionsPrefabs:
   - {fileID: 1125782754634522, guid: d47dbec77cb07d3499fa3234b9d95023, type: 2}
   - {fileID: 1430479541655360, guid: 862ec5127c4391f46848b3ab2235e200, type: 2}
   - {fileID: 1876154946128044, guid: 9e2202ace5f4a73498b3a032ee0b3541, type: 2}
+--- !u!114 &114849289455444606
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1636962970617598}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c81e5b4eb88a4df41bcee4b64821220b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _speed: 10
+  _angularSpeed: 120
 --- !u!195 &195162951402993586
 NavMeshAgent:
   m_ObjectHideFlags: 1

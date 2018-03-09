@@ -2,10 +2,10 @@
 
 public class UnitComponent : MonoBehaviour
 {
-    protected Unit _unit;
+    protected Unit unit { get; private set; }
 
-    void Start()
+    void Awake()
     {
-        _unit = GetComponent<Unit>();
+        unit = GetComponent<Unit>();
     }
 }

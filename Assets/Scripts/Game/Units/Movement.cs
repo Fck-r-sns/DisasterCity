@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.AI;
 
 public class Movement : UnitComponent
@@ -29,6 +27,13 @@ public class Movement : UnitComponent
         _navMeshAgent = GetComponent<NavMeshAgent>();
         _navMeshAgent.speed = _speed;
         _navMeshAgent.angularSpeed = _angularSpeed;
+
+        unit.defence.onDestroyed += OnDestroyed;
+    }
+
+    void OnDestroyed()
+    {
+        Destroy(_targetPointer.gameObject);
     }
 
     public void GoTo(Vector3 position)

@@ -6,9 +6,9 @@ public class DragonAttackCollider : MonoBehaviour
     {
         foreach (var contact in collision.contacts)
         {
-            var tank = contact.otherCollider.GetComponent<Tank>();
-            if (tank != null)
-                tank.ReceiveAttack();
+            var defence = contact.otherCollider.GetComponent<Defence>();
+            if (defence != null)
+                defence.ReceiveAttack();
 
             var building = contact.otherCollider.GetComponent<BuildingDamageReceiver>();
             if (building != null)

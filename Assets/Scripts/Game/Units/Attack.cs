@@ -17,9 +17,13 @@ public class Attack : UnitComponent
     [SerializeField]
     GameObject _projectilePrefab;
 
-    DragonController _monster;
-    Transform _shootingTarget;
+    Transform _target;
     float _lastShotTime;
+
+    void Start()
+    {
+        _target = Game.instance.enemiesManager.GetMonster().GetChest();
+    }
 
     void Shoot()
     {
@@ -32,14 +36,14 @@ public class Attack : UnitComponent
     // Update is called once per frame
     void Update()
     {
-        if (_shootingTarget != null)
+        if (_target != null)
         {
-            Vector3 towerDirection = _shootingTarget.position - transform.position;
+            Vector3 towerDirection = _target.position - transform.position;
             towerDirection.y = 0f;
             _towerPivot.rotation = Quaternion.LookRotation(towerDirection);
 
             Vector3 gunDirection = transform.forward;
-            float angle = -Mathf.Rad2Deg * Mathf.Atan((_shootingTarget.position.y - transform.position.y) / towerDirection.magnitude);
+            float angle = -Mathf.Rad2Deg * Mathf.Atan((_target.position.y - transform.position.y) / towerDirection.magnitude);
             _gunPivot.localEulerAngles = new Vector3(angle, 0f, 0f);
 
             if (Time.time - _lastShotTime > _shootingPeriod)

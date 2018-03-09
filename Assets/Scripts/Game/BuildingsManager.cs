@@ -1,19 +1,40 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class BuildingsManager : MonoBehaviour
 {
+    Dictionary<int, BuildingController> _buildings = new Dictionary<int, BuildingController>();
 
-    // Use this for initialization
-    void Start()
+    public void RegisterBuilding(BuildingController building)
     {
-
+        _buildings.Add(building.id, building);
     }
 
-    // Update is called once per frame
+    public void UnregisterBuilding(BuildingController building)
+    {
+        _buildings.Remove(building.id);
+    }
+
+    public Dictionary<int, BuildingController> GetBuildings()
+    {
+        return _buildings;
+    }
+
     void Update()
     {
-
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (Input.GetKey(KeyCode.E))
+            {
+                RaycastHit hit;
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                if (Physics.Raycast(ray, out hit, float.MaxValue, LayerMask.GetMask("Buildings")))
+                {
+                    BuildingDamageReceiver building = hit.collider.GetComponent<BuildingDamageReceiver>();
+                    if (building != null)
+                        building.ReceiveAttack();
+                }
+            }
+        }
     }
 }

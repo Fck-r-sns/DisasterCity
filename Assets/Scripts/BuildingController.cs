@@ -14,7 +14,7 @@ public class BuildingController : MonoBehaviour
     void Start()
     {
         id = ++IdGenerator;
-        GameControl.instance.RegisterBuilding(this);
+        Game.instance.buildingsManager.RegisterBuilding(this);
     }
 
     public void ReceiveAttack()
@@ -24,7 +24,7 @@ public class BuildingController : MonoBehaviour
 
         DisableRigidbodies(transform);
         isDestroyed = true;
-        GameControl.instance.UnregisterBuilding(this);
+        Game.instance.buildingsManager.UnregisterBuilding(this);
         StartCoroutine(CrushingProcess());
     }
 

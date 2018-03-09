@@ -18,9 +18,7 @@ public class UiStats : MonoBehaviour
 
     void Start()
     {
-        GameControl.instance.onTanksCreatedCounterChanged.AddListener(cnt => _tanksCreated.text = "Tanks created: " + cnt);
-        GameControl.instance.onTanksLostCounterChanged.AddListener(cnt => _tanksLost.text = "Tanks lost: " + cnt);
-        GameControl.instance.onBuildingsLostCounterChanged.AddListener(cnt => _buildingsLost.text = "Buildings lost: " + cnt);
+
     }
 
     void Update()

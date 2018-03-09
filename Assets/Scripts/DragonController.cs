@@ -60,7 +60,7 @@ public class DragonController : MonoBehaviour
     [SerializeField]
     DragonAttackCollider _rightClawAttackCollider;
 
-    Dictionary<int, Tank> _units;
+    Dictionary<int, Unit> _units;
     Dictionary<int, BuildingController> _buildings;
     Transform _movementPointer;
     Vector3? _patrolingPosition;
@@ -85,8 +85,8 @@ public class DragonController : MonoBehaviour
 
     void Start()
     {
-        _units = GameControl.instance.GetUnits();
-        _buildings = GameControl.instance.GetBuildings();
+        _units = Game.instance.unitsManager.GetUnits();
+        _buildings = Game.instance.buildingsManager.GetBuildings();
 
         _generalHealth = 2500f;
         _bodyPartsHealth = new Dictionary<BodyPart, float>
@@ -222,7 +222,7 @@ public class DragonController : MonoBehaviour
         if (Time.time - _lastTargetUpdateTime > TargetUpdatePeriod)
         {
             _lastTargetUpdateTime = Time.time;
-            Tank nearestUnit = null;
+            Unit nearestUnit = null;
             float minDistance = float.MaxValue;
             foreach (var kv in _units)
             {
