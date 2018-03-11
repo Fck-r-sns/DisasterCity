@@ -26,7 +26,7 @@ public class Unit : MonoBehaviour
         id = ++idGenerator;
         _defence.onDestroyed += OnDestroyed;
 
-        Game.instance.unitsManager.RegisterUnit(this);
+        Game.unitsManager.RegisterUnit(this);
     }
 
     void OnDestroyed()
@@ -34,7 +34,7 @@ public class Unit : MonoBehaviour
         Destroy(gameObject);
         isDestroyed = true;
 
-        Game.instance.unitsManager.UnregisterUnit(this);
+        Game.unitsManager.UnregisterUnit(this);
     }
 
     public void SetSelected(bool selected)

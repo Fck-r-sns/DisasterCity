@@ -18,9 +18,9 @@ public class UiStats : MonoBehaviour
 
     void Start()
     {
-        Game.instance.unitsManager.onUnitsCreatedCountChanged += SetUnitsCreatedCount;
-        Game.instance.unitsManager.onUnitsLostCountChanged += SetUnitsLostCount;
-        Game.instance.buildingsManager.onBuildingsLostCountChanged += SetBuildingsLostCount;
+        Game.unitsManager.onUnitsCreatedCountChanged += SetUnitsCreatedCount;
+        Game.unitsManager.onUnitsLostCountChanged += SetUnitsLostCount;
+        Game.buildingsManager.onBuildingsLostCountChanged += SetBuildingsLostCount;
 
         SetUnitsCreatedCount(0);
         SetUnitsLostCount(0);

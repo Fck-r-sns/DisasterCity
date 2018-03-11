@@ -3,6 +3,8 @@
 public class Game : MonoBehaviour
 {
     [SerializeField]
+    ProcessesManager _processesManager;
+    [SerializeField]
     UnitsManager _unitsManager;
     [SerializeField]
     BuildingsManager _buildingsManager;
@@ -11,12 +13,12 @@ public class Game : MonoBehaviour
 
     static Game _instance;
 
-    public static Game instance { get { return _instance; } }
-    public UnitsManager unitsManager { get { return _unitsManager; } }
-    public BuildingsManager buildingsManager { get { return _buildingsManager; } }
-    public EnemiesManager enemiesManager { get { return _enemiesManager; } }
+    public static ProcessesManager processesManager { get { return _instance._processesManager; } }
+    public static UnitsManager unitsManager { get { return _instance._unitsManager; } }
+    public static BuildingsManager buildingsManager { get { return _instance._buildingsManager; } }
+    public static EnemiesManager enemiesManager { get { return _instance._enemiesManager; } }
 
-    void Start()
+    void Awake()
     {
         _instance = this;
     }

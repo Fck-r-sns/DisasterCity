@@ -85,8 +85,8 @@ public class DragonController : MonoBehaviour
 
     void Start()
     {
-        _units = Game.instance.unitsManager.GetUnits();
-        _buildings = Game.instance.buildingsManager.GetBuildings();
+        _units = Game.unitsManager.GetUnits();
+        _buildings = Game.buildingsManager.GetBuildings();
 
         _generalHealth = 2500f;
         _bodyPartsHealth = new Dictionary<BodyPart, float>

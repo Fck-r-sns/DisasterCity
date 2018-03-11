@@ -22,7 +22,7 @@ public class Attack : UnitComponent
 
     void Start()
     {
-        _target = Game.instance.enemiesManager.GetMonster().GetChest();
+        _target = Game.enemiesManager.GetMonster().GetChest();
     }
 
     void Shoot()
