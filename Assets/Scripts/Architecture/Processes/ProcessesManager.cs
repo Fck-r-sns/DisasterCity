@@ -30,7 +30,7 @@ public class ProcessesManager : MonoBehaviour
         foreach (var p in _newProcesses)
         {
             _activeProcesses.Add(p.id, p);
-            p.OnStart();
+            p.Start();
             if (onProcessStarted != null)
                 onProcessStarted(p);
         }
@@ -39,7 +39,7 @@ public class ProcessesManager : MonoBehaviour
         foreach (var p in _terminatedProcesses)
         {
             _activeProcesses.Remove(p.id);
-            p.OnTerminate();
+            p.Terminate();
             if (onProcessTerminated != null)
                 onProcessTerminated(p);
         }
@@ -50,7 +50,7 @@ public class ProcessesManager : MonoBehaviour
         foreach (var kv in _activeProcesses)
         {
             Process p = kv.Value;
-            bool finished = p.OnUpdate(Time.deltaTime);
+            bool finished = p.Update(Time.deltaTime);
             if (onProcessUpdated != null)
                 onProcessUpdated(p);
             if (finished)
@@ -60,7 +60,7 @@ public class ProcessesManager : MonoBehaviour
         foreach (var p in _finishedProcesses)
         {
             _activeProcesses.Remove(p.id);
-            p.OnFinish();
+            p.Finish();
             if (onProcessFinished != null)
                 onProcessFinished(p);
         }

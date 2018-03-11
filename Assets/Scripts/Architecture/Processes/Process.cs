@@ -1,6 +1,13 @@
-﻿public abstract class Process
+﻿using System;
+
+public abstract class Process
 {
     static int IdGenerator;
+
+    public event Action onStarted;
+    public event Action onUpdated;
+    public event Action onFinished;
+    public event Action onTerminated;
 
     public int id { get; private set; }
     public string name { get; private set; }
@@ -12,8 +19,37 @@
         this.name = name;
     }
 
-    public abstract void OnStart();
-    public abstract bool OnUpdate(float dt);
-    public abstract void OnFinish();
-    public abstract void OnTerminate();
+    public void Start()
+    {
+        OnStart();
+        if (onStarted != null)
+            onStarted();
+    }
+
+    public bool Update(float dt)
+    {
+        bool res = OnUpdate(dt);
+        if (onUpdated != null)
+            onUpdated();
+        return res;
+    }
+
+    public void Finish()
+    {
+        OnFinish();
+        if (onFinished != null)
+            onFinished();
+    }
+
+    public void Terminate()
+    {
+        OnTerminate();
+        if (onTerminated != null)
+            onTerminated();
+    }
+
+    protected virtual void OnStart() { }
+    protected virtual bool OnUpdate(float dt) { return true; }
+    protected virtual void OnFinish() { }
+    protected virtual void OnTerminate() { }
 }
