@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class Game : MonoBehaviour
 {
@@ -15,16 +16,21 @@ public class Game : MonoBehaviour
     [SerializeField]
     GameObject _uiTechTree;
 
+    public event Action<bool> onSetPaused;
+
     private static Game _instance;
     private bool _isPaused;
     private bool _isPausedBeforeTechTreeMode;
     private bool _isTechTreeMode;
 
+    public static Game instance { get { return _instance; } }
     public static ProcessesManager processesManager { get { return _instance._processesManager; } }
     public static UnitsManager unitsManager { get { return _instance._unitsManager; } }
     public static BuildingsManager buildingsManager { get { return _instance._buildingsManager; } }
     public static EnemiesManager enemiesManager { get { return _instance._enemiesManager; } }
     public static TechTreeManager techTreeManager { get { return _instance._techTreeManager; } }
+
+    public static bool isPaused { get { return _instance._isPaused; } }
 
     private void Awake()
     {
@@ -33,32 +39,28 @@ public class Game : MonoBehaviour
 
     private void Update()
     {
-        if (!_isTechTreeMode && Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space))
             SetPaused(!_isPaused);
-        if (!_isTechTreeMode && Input.GetKeyDown(KeyCode.M))
-            ShowTechTree();
-        else if (_isTechTreeMode && (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.M)))
-            HideTechTree();
+        if (Input.GetKeyDown(KeyCode.Tab))
+            ToggleTechTree();
     }
 
     private void SetPaused(bool isPaused)
     {
         _isPaused = isPaused;
         Time.timeScale = _isPaused ? 0f : 1f;
+        if (onSetPaused != null)
+            onSetPaused(_isPaused);
     }
 
-    private void ShowTechTree()
+    private void SetTechTreeVisible(bool visible)
     {
-        _isPausedBeforeTechTreeMode = _isPaused;
-        SetPaused(true);
-        _uiTechTree.gameObject.SetActive(true);
-        _isTechTreeMode = true;
+        _uiTechTree.gameObject.SetActive(visible);
+        _isTechTreeMode = visible;
     }
 
-    private void HideTechTree()
+    private void ToggleTechTree()
     {
-        _uiTechTree.gameObject.SetActive(false);
-        SetPaused(_isPausedBeforeTechTreeMode);
-        _isTechTreeMode = false;
+        SetTechTreeVisible(!_isTechTreeMode);
     }
 }

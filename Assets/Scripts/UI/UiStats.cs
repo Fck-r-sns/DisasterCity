@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 public class UiStats : MonoBehaviour
 {
-    const float TimeUpdatePeriod = 1f;
+    const float TimeUpdatePeriod = 0.8f;
 
     [SerializeField]
     Text _time;
@@ -21,6 +21,7 @@ public class UiStats : MonoBehaviour
         Game.unitsManager.onUnitsCreatedCountChanged += SetUnitsCreatedCount;
         Game.unitsManager.onUnitsLostCountChanged += SetUnitsLostCount;
         Game.buildingsManager.onBuildingsLostCountChanged += SetBuildingsLostCount;
+        Game.instance.onSetPaused += OnSetPaused;
 
         SetUnitsCreatedCount(0);
         SetUnitsLostCount(0);
@@ -32,7 +33,8 @@ public class UiStats : MonoBehaviour
         if (Time.time >= _lastTimeUpdateTime + TimeUpdatePeriod)
         {
             _lastTimeUpdateTime = Time.time;
-            _time.text = "Time: " + Mathf.CeilToInt(Time.time);
+            if (!Game.isPaused)
+                UpdateTime();
         }
     }
 
@@ -48,6 +50,19 @@ public class UiStats : MonoBehaviour
 
     void SetBuildingsLostCount(int count)
     {
-        _buildingsLost.text = "Buldings lost: " + count;
+        _buildingsLost.text = "Buildings lost: " + count;
+    }
+
+    void UpdateTime()
+    {
+        _time.text = "Time: " + Mathf.CeilToInt(Time.time);
+    }
+
+    void OnSetPaused(bool paused)
+    {
+        if (paused)
+            _time.text = "Time: Pause";
+        else
+            UpdateTime();
     }
 }
