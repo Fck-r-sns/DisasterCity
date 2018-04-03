@@ -2,10 +2,17 @@
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class UiCallReserves : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
+public class UiCallAbility : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField]
-    Text _valueOutput;
+    Defines.AbilityType _abilityType;
+    [SerializeField]
+    Text _rechargeTime;
+
+    private void Start()
+    {
+
+    }
 
     public void OnPointerClick(PointerEventData eventData)
     {

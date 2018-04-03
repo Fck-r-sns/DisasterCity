@@ -5,6 +5,10 @@ using UnityEngine;
 public class UnitsManager : MonoBehaviour
 {
     [SerializeField]
+    TanksProvider _tanksProvider;
+    [SerializeField]
+    AircraftsProvider _aircraftsProvider;
+    [SerializeField]
     GameObject _tankPrefab;
 
     public event Action<int> onUnitsCreatedCountChanged;
@@ -37,6 +41,19 @@ public class UnitsManager : MonoBehaviour
     public Dictionary<int, Unit> GetUnits()
     {
         return _totalUnits;
+    }
+
+    public UnitsProvider GetUnitsProvider(Defines.UnitType unitType)
+    {
+        switch (unitType)
+        {
+            case Defines.UnitType.Tank:
+                return _tanksProvider;
+            case Defines.UnitType.Aircraft:
+                return _aircraftsProvider;
+            default:
+                return null;
+        }
     }
 
     public void BeginFrameSelection()

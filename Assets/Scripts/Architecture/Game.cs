@@ -13,14 +13,12 @@ public class Game : MonoBehaviour
     EnemiesManager _enemiesManager;
     [SerializeField]
     TechTreeManager _techTreeManager;
-    [SerializeField]
-    GameObject _uiTechTree;
 
     public event Action<bool> onSetPaused;
+    public event Action<bool> onTechTreeActivationChanged;
 
     private static Game _instance;
     private bool _isPaused;
-    private bool _isPausedBeforeTechTreeMode;
     private bool _isTechTreeMode;
 
     public static Game instance { get { return _instance; } }
@@ -55,8 +53,9 @@ public class Game : MonoBehaviour
 
     private void SetTechTreeVisible(bool visible)
     {
-        _uiTechTree.gameObject.SetActive(visible);
         _isTechTreeMode = visible;
+        if (onTechTreeActivationChanged != null)
+            onTechTreeActivationChanged(visible);
     }
 
     private void ToggleTechTree()

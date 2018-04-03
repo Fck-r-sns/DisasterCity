@@ -1,9 +1,10 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public abstract class UnitsProvider : MonoBehaviour
 {
     [SerializeField]
-    string _unitName;
+    Defines.UnitType _unitType;
     [SerializeField]
     int _initialUnitsCount;
     [SerializeField]
@@ -14,6 +15,10 @@ public abstract class UnitsProvider : MonoBehaviour
     GameObject _deploymentZone;
     [SerializeField]
     GameObject _unitPrefab;
+
+    public event Action onBecameEnabled;
+    public event Action<int> onUnitsCountChanged;
+    public event Action<int> onMaxUnitsCountChanged;
 
     public bool isEnabled { get; private set; }
     public int unitsCount { get; protected set; }
@@ -32,13 +37,15 @@ public abstract class UnitsProvider : MonoBehaviour
     protected void Enable()
     {
         isEnabled = true;
+        if (onBecameEnabled != null)
+            onBecameEnabled();
         if (unitsCount < maxUnitsCount)
             StartUnitProduction();
     }
 
     private void StartUnitProduction()
     {
-        Process p = new TimeProcess("Producing: " + _unitName, productionTime);
+        Process p = new TimeProcess("Producing: " + _unitType, productionTime);
         p.onFinished += OnUnitProduced;
         Game.processesManager.StartProcess(p);
     }
@@ -46,6 +53,8 @@ public abstract class UnitsProvider : MonoBehaviour
     private void OnUnitProduced()
     {
         unitsCount++;
+        if (onUnitsCountChanged != null)
+            onUnitsCountChanged(unitsCount);
         if (unitsCount < maxUnitsCount)
             StartUnitProduction();
     }

@@ -1,10 +1,10 @@
-﻿public class TanksProvider : UnitsProvider
+﻿public class AircraftsProvider : UnitsProvider
 {
     protected override void OnResearchFinished(TechTreeNodeId nodeId)
     {
         switch (nodeId)
         {
-            case TechTreeNodeId.TankBase:
+            case TechTreeNodeId.AviaBase:
                 Enable();
                 break;
         }
