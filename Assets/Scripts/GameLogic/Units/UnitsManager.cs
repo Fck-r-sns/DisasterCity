@@ -5,20 +5,25 @@ using UnityEngine;
 public class UnitsManager : MonoBehaviour
 {
     [SerializeField]
-    TanksProvider _tanksProvider;
-    [SerializeField]
-    AircraftsProvider _aircraftsProvider;
+    Transform _providers;
     [SerializeField]
     GameObject _tankPrefab;
 
     public event Action<int> onUnitsCreatedCountChanged;
     public event Action<int> onUnitsLostCountChanged;
 
+    Dictionary<Defines.UnitType, UnitsProvider> _unitsProviders = new Dictionary<Defines.UnitType, UnitsProvider>();
     Dictionary<int, Unit> _totalUnits = new Dictionary<int, Unit>();
     Dictionary<int, Unit> _selectedUnits = new Dictionary<int, Unit>();
     Dictionary<int, Unit> _frameSelectionBuffer = new Dictionary<int, Unit>();
     int _unitsCreatedCount;
     int _unitsLostCount;
+
+    private void Awake()
+    {
+        foreach (UnitsProvider unitsProvider in _providers.GetComponentsInChildren<UnitsProvider>())
+            _unitsProviders.Add(unitsProvider.unitType, unitsProvider);
+    }
 
     public void RegisterUnit(Unit unit)
     {
@@ -45,15 +50,7 @@ public class UnitsManager : MonoBehaviour
 
     public UnitsProvider GetUnitsProvider(Defines.UnitType unitType)
     {
-        switch (unitType)
-        {
-            case Defines.UnitType.Tank:
-                return _tanksProvider;
-            case Defines.UnitType.Aircraft:
-                return _aircraftsProvider;
-            default:
-                return null;
-        }
+        return _unitsProviders[unitType];
     }
 
     public void BeginFrameSelection()

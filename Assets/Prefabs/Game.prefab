@@ -32,6 +32,22 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &1427149418183972
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4221771743762770}
+  - component: {fileID: 114873444230227452}
+  m_Layer: 0
+  m_Name: TanksProvider
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1901249194025656
 GameObject:
   m_ObjectHideFlags: 0
@@ -40,8 +56,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4849016957659572}
-  - component: {fileID: 114791024548588196}
-  - component: {fileID: 114859876967465560}
   m_Layer: 0
   m_Name: Providers
   m_TagString: Untagged
@@ -49,6 +63,48 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &1992014717721298
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4639473950055474}
+  - component: {fileID: 114197317750511198}
+  m_Layer: 0
+  m_Name: AircraftsProvider
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4221771743762770
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1427149418183972}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4849016957659572}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4639473950055474
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1992014717721298}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4849016957659572}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4849016957659572
 Transform:
   m_ObjectHideFlags: 1
@@ -58,7 +114,9 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 4221771743762770}
+  - {fileID: 4639473950055474}
   m_Father: {fileID: 4935270333072562}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -76,6 +134,31 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114197317750511198
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1992014717721298}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61714a73230eb05439e9ba8e1fd17cd1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _unitType: 1
+  _activationTechTreeNode: 5
+  _initialUnitsCount: 1
+  _initialMaxUnitsCount: 3
+  _maxUnitsCountUpgradeValue: 2
+  _maxUnitsCountTechTreeNode: 7
+  _initialProductionTime: 20
+  _productionTimeUpgradeValue: 10
+  _productionTimeTechTreeNode: 6
+  _initialUnitsDamage: 100
+  _unitsDamageUpgradeValue: 200
+  _unitsDamageTechTreeNode: 8
+  _deploymentZone: {fileID: 0}
+  _unitPrefab: {fileID: 0}
 --- !u!114 &114213480587977348
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -114,8 +197,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b91a0be53a37656458c15cc11f6c5097, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _tanksProvider: {fileID: 114791024548588196}
-  _aircraftsProvider: {fileID: 114859876967465560}
+  _providers: {fileID: 4849016957659572}
   _tankPrefab: {fileID: 1636962970617598, guid: 4bf374b290f04874998d87a60df8f7b1,
     type: 2}
 --- !u!114 &114514006674498044
@@ -130,24 +212,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _monster: {fileID: 0}
---- !u!114 &114791024548588196
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1901249194025656}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 926ebd049b89d924fa9168df9e57eed8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _unitType: 0
-  _initialUnitsCount: 0
-  _initialMaxUnitsCount: 0
-  _initialProductionTime: 0
-  _deploymentZone: {fileID: 0}
-  _unitPrefab: {fileID: 1636962970617598, guid: 4bf374b290f04874998d87a60df8f7b1,
-    type: 2}
 --- !u!114 &114803250546211708
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -159,23 +223,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c77e65fad5d5c1d4d9075b6571e8c943, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &114859876967465560
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1901249194025656}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 84be87dc8d3b8b045930791e61b3cd50, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _unitType: 1
-  _initialUnitsCount: 0
-  _initialMaxUnitsCount: 0
-  _initialProductionTime: 0
-  _deploymentZone: {fileID: 0}
-  _unitPrefab: {fileID: 0}
 --- !u!114 &114872680131060346
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -187,3 +234,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77201721460db9b418971baf0e446b06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114873444230227452
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1427149418183972}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61714a73230eb05439e9ba8e1fd17cd1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _unitType: 0
+  _activationTechTreeNode: 1
+  _initialUnitsCount: 5
+  _initialMaxUnitsCount: 10
+  _maxUnitsCountUpgradeValue: 5
+  _maxUnitsCountTechTreeNode: 3
+  _initialProductionTime: 5
+  _productionTimeUpgradeValue: 2
+  _productionTimeTechTreeNode: 2
+  _initialUnitsDamage: 10
+  _unitsDamageUpgradeValue: 20
+  _unitsDamageTechTreeNode: 4
+  _deploymentZone: {fileID: 0}
+  _unitPrefab: {fileID: 0}

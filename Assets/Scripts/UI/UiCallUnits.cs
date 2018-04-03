@@ -14,8 +14,8 @@ public class UiCallUnits : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
     private void Start()
     {
         _unitsProvider = Game.unitsManager.GetUnitsProvider(_unitType);
-        gameObject.SetActive(_unitsProvider.isEnabled);
-        _unitsProvider.onBecameEnabled += () =>
+        gameObject.SetActive(_unitsProvider.isActivated);
+        _unitsProvider.onActivated += () =>
         {
             UpdateUnitsCountOutput();
             gameObject.SetActive(true);
