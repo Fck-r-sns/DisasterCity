@@ -23,7 +23,7 @@ public class UiProcesses : MonoBehaviour
         UiProcessWidget widget = Instantiate(_processWidgetPrefab);
         widget.SetName(p.name);
         widget.SetProgress(p.progress);
-        widget.transform.SetParent(_widgetsList);
+        widget.transform.SetParent(_widgetsList, false);
         widget.transform.SetAsLastSibling();
         _widgets.Add(p.id, widget);
     }

@@ -5,6 +5,8 @@ using UnityEngine.UI;
 public class SelectionFrame : Graphic, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     [SerializeField]
+    RectTransform _canvas;
+    [SerializeField]
     RectTransform _frame;
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -21,16 +23,26 @@ public class SelectionFrame : Graphic, IBeginDragHandler, IDragHandler, IEndDrag
         if (eventData.button != PointerEventData.InputButton.Left)
             return;
 
-        float x = eventData.position.x >= eventData.pressPosition.x ? eventData.pressPosition.x : eventData.position.x;
-        float y = eventData.position.y >= eventData.pressPosition.y ? eventData.pressPosition.y : eventData.position.y;
-        _frame.anchoredPosition = new Vector2(x, y);
-        _frame.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, Mathf.Abs(eventData.position.x - eventData.pressPosition.x));
-        _frame.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, Mathf.Abs(eventData.position.y - eventData.pressPosition.y));
+        float x1 = eventData.pressPosition.x;
+        float y1 = eventData.pressPosition.y;
+        float x2 = eventData.position.x;
+        float y2 = eventData.position.y;
 
-        Rect rect = _frame.rect;
-        rect.x = x;
-        rect.y = y;
-        Game.unitsManager.UpdateFrameSelection(rect);
+        // Logic
+        float x = Mathf.Min(x1, x2);
+        float y = Mathf.Min(y1, y2);
+        float width = Mathf.Abs(x2 - x1);
+        float height = Mathf.Abs(y2 - y1);
+        Game.unitsManager.UpdateFrameSelection(new Rect(x, y, width, height));
+
+        // Visual
+        x /= _canvas.localScale.x;
+        y /= _canvas.localScale.y;
+        width /= _canvas.localScale.x;
+        height /= _canvas.localScale.y;
+        _frame.anchoredPosition = new Vector2(x, y);
+        _frame.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, width);
+        _frame.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, height);
     }
 
     public void OnEndDrag(PointerEventData eventData)
