@@ -729,6 +729,7 @@ MonoBehaviour:
   _unitType: 1
   _activationTechTreeNode: 5
   _initialUnitsCount: 1
+  _initialUnitsDamage: 100
   _initialMaxUnitsCount: 3
   _maxUnitsCountUpgradeValue: 2
   _maxUnitsCountTechTreeNode: 7
@@ -738,9 +739,6 @@ MonoBehaviour:
   _initialDeploymentTime: 0
   _deploymentTimeUpgradeValue: 0
   _deplymentTimeTechTreeNode: 0
-  _initialUnitsDamage: 100
-  _unitsDamageUpgradeValue: 200
-  _unitsDamageTechTreeNode: 8
   _deploymentZone: {fileID: 1098939747213424}
   _unitPrefab: {fileID: 0}
 --- !u!114 &114213480587977348
@@ -832,18 +830,16 @@ MonoBehaviour:
   _unitType: 0
   _activationTechTreeNode: 1
   _initialUnitsCount: 5
+  _initialUnitsDamage: 100
   _initialMaxUnitsCount: 10
   _maxUnitsCountUpgradeValue: 5
   _maxUnitsCountTechTreeNode: 3
   _initialProductionTime: 5
   _productionTimeUpgradeValue: 2
   _productionTimeTechTreeNode: 2
-  _initialDeploymentTime: 0
-  _deploymentTimeUpgradeValue: 0
-  _deplymentTimeTechTreeNode: 0
-  _initialUnitsDamage: 10
-  _unitsDamageUpgradeValue: 20
-  _unitsDamageTechTreeNode: 4
+  _initialDeploymentTime: 10
+  _deploymentTimeUpgradeValue: 5
+  _deplymentTimeTechTreeNode: 4
   _deploymentZone: {fileID: 1189427092897388}
   _unitPrefab: {fileID: 1636962970617598, guid: 4bf374b290f04874998d87a60df8f7b1,
     type: 2}

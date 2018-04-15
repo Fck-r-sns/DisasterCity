@@ -11,6 +11,8 @@ public class UnitsProvider : MonoBehaviour
 
     [SerializeField]
     int _initialUnitsCount;
+    [SerializeField]
+    float _initialUnitsDamage;
 
     [SerializeField]
     int _initialMaxUnitsCount;
@@ -34,13 +36,6 @@ public class UnitsProvider : MonoBehaviour
     TechTreeNodeId _deplymentTimeTechTreeNode;
 
     [SerializeField]
-    float _initialUnitsDamage;
-    [SerializeField]
-    float _unitsDamageUpgradeValue;
-    [SerializeField]
-    TechTreeNodeId _unitsDamageTechTreeNode;
-
-    [SerializeField]
     GameObject _deploymentZone;
     [SerializeField]
     GameObject _unitPrefab;
@@ -50,7 +45,6 @@ public class UnitsProvider : MonoBehaviour
     public event Action<int> onMaxUnitsCountChanged;
     public event Action<float> onProductionTimeChanged;
     public event Action<float> onDeploymentTimeChanged;
-    public event Action<float> onUnitsDamageChanged;
 
     public Defines.UnitType unitType { get { return _unitType; } }
     public bool isActivated { get; private set; }
@@ -72,14 +66,14 @@ public class UnitsProvider : MonoBehaviour
     private void Start()
     {
         unitsCount = _initialUnitsCount;
+        unitsDamage = _initialUnitsDamage;
         maxUnitsCount = _initialMaxUnitsCount;
         productionTime = _initialProductionTime;
-        unitsDamage = _initialUnitsDamage;
+        deploymentTime = _initialDeploymentTime;
 
         _upgrades.Add(_activationTechTreeNode, Activate);
         _upgrades.Add(_productionTimeTechTreeNode, UpgradeProductionTime);
         _upgrades.Add(_maxUnitsCountTechTreeNode, UpgradeMaxUnitsCount);
-        _upgrades.Add(_unitsDamageTechTreeNode, UpgradeUnitsDamage);
 
         Game.techTreeManager.onResearchFinished += OnResearchFinished;
         Game.instance.onGameModeChanged += OnGameModeChanged;
@@ -113,13 +107,6 @@ public class UnitsProvider : MonoBehaviour
         maxUnitsCount += _maxUnitsCountUpgradeValue;
         if (onMaxUnitsCountChanged != null)
             onMaxUnitsCountChanged(maxUnitsCount);
-    }
-
-    private void UpgradeUnitsDamage()
-    {
-        unitsDamage += _unitsDamageUpgradeValue;
-        if (onUnitsDamageChanged != null)
-            onUnitsDamageChanged(unitsDamage);
     }
 
     private void StartUnitProductionProcess()

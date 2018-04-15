@@ -47,11 +47,11 @@ public class TechTreeManager : MonoBehaviour
         AddNode(new TechTreeNode(TechTreeNodeId.TankBase, "Army base", "Provides tanks", 10f));
         AddNode(new TechTreeNode(TechTreeNodeId.TankBaseUpgradeProductionTime, "Army facility", "Decreases tanks' production time", 30f));
         AddNode(new TechTreeNode(TechTreeNodeId.TankBaseUpgradeCapacity, "Army depot", "Increases max capacity of army base", 30f));
-        AddNode(new TechTreeNode(TechTreeNodeId.TankBaseUpgradeDamage, "Army research centre", "Increases tanks' damage", 30f));
+        AddNode(new TechTreeNode(TechTreeNodeId.TankBaseUpgradeDeploymentTime, "Army logistics centre", "Decreases tanks' deployment time", 30f));
         AddNode(new TechTreeNode(TechTreeNodeId.AviaBase, "Avia base", "Provides aircrafts", 20f));
         AddNode(new TechTreeNode(TechTreeNodeId.AviaBaseUpgradeProductionTime, "Avia facility", "Decreases aircrafts' production time", 30f));
         AddNode(new TechTreeNode(TechTreeNodeId.AviaBaseUpgradeCapacity, "Avia depot", "Increases max capacity of avia base", 30f));
-        AddNode(new TechTreeNode(TechTreeNodeId.AviaBaseUpgradeDamage, "Avia research centre", "Increases aircrafts' damage", 30f));
+        AddNode(new TechTreeNode(TechTreeNodeId.AviaBaseUpgradeDeploymentTime, "Avia logistics centre", "Decreases aircrafts' deployment time", 30f));
         AddNode(new TechTreeNode(TechTreeNodeId.ArtilleryBase, "Artillery base", "Provides artillery strike", 30f));
         AddNode(new TechTreeNode(TechTreeNodeId.ArtilleryBaseUpgradeDelayTime, "Artillery aiming centre", "Descreases delay before artillery strike", 40f));
         AddNode(new TechTreeNode(TechTreeNodeId.ArtilleryBaseUpgradeReloadTime, "Artillery logistics", "Descreases artillery strike's reload time", 50f));
@@ -60,11 +60,11 @@ public class TechTreeManager : MonoBehaviour
         ConnectNodes(TechTreeNodeId.City, TechTreeNodeId.TankBase);
         ConnectNodes(TechTreeNodeId.TankBase, TechTreeNodeId.TankBaseUpgradeProductionTime);
         ConnectNodes(TechTreeNodeId.TankBase, TechTreeNodeId.TankBaseUpgradeCapacity);
-        ConnectNodes(TechTreeNodeId.TankBase, TechTreeNodeId.TankBaseUpgradeDamage);
+        ConnectNodes(TechTreeNodeId.TankBase, TechTreeNodeId.TankBaseUpgradeDeploymentTime);
         ConnectNodes(TechTreeNodeId.City, TechTreeNodeId.AviaBase);
         ConnectNodes(TechTreeNodeId.AviaBase, TechTreeNodeId.AviaBaseUpgradeProductionTime);
         ConnectNodes(TechTreeNodeId.AviaBase, TechTreeNodeId.AviaBaseUpgradeCapacity);
-        ConnectNodes(TechTreeNodeId.AviaBase, TechTreeNodeId.AviaBaseUpgradeDamage);
+        ConnectNodes(TechTreeNodeId.AviaBase, TechTreeNodeId.AviaBaseUpgradeDeploymentTime);
         ConnectNodes(TechTreeNodeId.City, TechTreeNodeId.ArtilleryBase);
         ConnectNodes(TechTreeNodeId.ArtilleryBase, TechTreeNodeId.ArtilleryBaseUpgradeDelayTime);
         ConnectNodes(TechTreeNodeId.ArtilleryBase, TechTreeNodeId.ArtilleryBaseUpgradeReloadTime);
