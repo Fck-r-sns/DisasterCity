@@ -3,6 +3,15 @@ using UnityEngine;
 
 public class Game : MonoBehaviour
 {
+    public enum Mode
+    {
+        UnitsControl,
+        TechTree,
+        CallForReserves,
+    }
+
+    private const Mode DefaultMode = Mode.UnitsControl;
+
     [SerializeField]
     ProcessesManager _processesManager;
     [SerializeField]
@@ -15,11 +24,11 @@ public class Game : MonoBehaviour
     TechTreeManager _techTreeManager;
 
     public event Action<bool> onSetPaused;
-    public event Action<bool> onTechTreeActivationChanged;
+    public event Action<Mode> onGameModeChanged;
 
     private static Game _instance;
     private bool _isPaused;
-    private bool _isTechTreeMode;
+    private Mode _curMode;
 
     public static Game instance { get { return _instance; } }
     public static ProcessesManager processesManager { get { return _instance._processesManager; } }
@@ -51,15 +60,15 @@ public class Game : MonoBehaviour
             onSetPaused(_isPaused);
     }
 
-    private void SetTechTreeVisible(bool visible)
-    {
-        _isTechTreeMode = visible;
-        if (onTechTreeActivationChanged != null)
-            onTechTreeActivationChanged(visible);
-    }
-
     private void ToggleTechTree()
     {
-        SetTechTreeVisible(!_isTechTreeMode);
+        SetGameMode(_curMode == Mode.TechTree ? DefaultMode : Mode.TechTree);
+    }
+
+    private void SetGameMode(Mode mode)
+    {
+        _curMode = mode;
+        if (onGameModeChanged != null)
+            onGameModeChanged(_curMode);
     }
 }
