@@ -55,11 +55,14 @@ public class UnitsProvider : MonoBehaviour
     public float unitsDamage { get; private set; }
 
     private Dictionary<TechTreeNodeId, Action> _upgrades = new Dictionary<TechTreeNodeId, Action>();
+    int _unitsCountToDeploy;
 
     public void StartDeployment(Vector3 position)
     {
         Game.instance.SetDefaultGameMode();
         SetDeploymentZoneVisible(false);
+        _unitsCountToDeploy = unitsCount;
+        unitsCount = 0;
         StartDeploymentProcess(position);
     }
 
@@ -139,7 +142,8 @@ public class UnitsProvider : MonoBehaviour
 
     private void OnDeploymentProcessFinished(Vector3 position)
     {
-        Instantiate(_unitPrefab, position, Quaternion.identity);
+        for (int i = 0; i < _unitsCountToDeploy; i++)
+            Instantiate(_unitPrefab, position, Quaternion.identity);
     }
 
     private void OnResearchFinished(TechTreeNodeId nodeId)
