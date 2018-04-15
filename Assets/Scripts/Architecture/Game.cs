@@ -7,7 +7,8 @@ public class Game : MonoBehaviour
     {
         UnitsControl,
         TechTree,
-        CallForReserves,
+        CallUnits,
+        CallAbility,
     }
 
     private const Mode DefaultMode = Mode.UnitsControl;
@@ -24,7 +25,7 @@ public class Game : MonoBehaviour
     TechTreeManager _techTreeManager;
 
     public event Action<bool> onSetPaused;
-    public event Action<Mode> onGameModeChanged;
+    public event Action<Mode, object> onGameModeChanged;
 
     private static Game _instance;
     private bool _isPaused;
@@ -38,6 +39,18 @@ public class Game : MonoBehaviour
     public static TechTreeManager techTreeManager { get { return _instance._techTreeManager; } }
 
     public static bool isPaused { get { return _instance._isPaused; } }
+
+    public void SetGameMode(Mode mode, object context)
+    {
+        _curMode = mode;
+        if (onGameModeChanged != null)
+            onGameModeChanged(_curMode, context);
+    }
+
+    public void SetDefaultGameMode()
+    {
+        SetGameMode(DefaultMode, null);
+    }
 
     private void Awake()
     {
@@ -62,13 +75,9 @@ public class Game : MonoBehaviour
 
     private void ToggleTechTree()
     {
-        SetGameMode(_curMode == Mode.TechTree ? DefaultMode : Mode.TechTree);
-    }
-
-    private void SetGameMode(Mode mode)
-    {
-        _curMode = mode;
-        if (onGameModeChanged != null)
-            onGameModeChanged(_curMode);
+        if (_curMode == Mode.TechTree)
+            SetDefaultGameMode();
+        else
+            SetGameMode(Mode.TechTree, null);
     }
 }

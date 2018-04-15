@@ -26,7 +26,7 @@ public class UiCallUnits : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        // Todo: call reserves
+        Game.instance.SetGameMode(Game.Mode.CallUnits, _unitType);
     }
 
     public void OnPointerEnter(PointerEventData eventData)

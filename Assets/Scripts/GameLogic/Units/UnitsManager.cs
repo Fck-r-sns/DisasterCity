@@ -18,11 +18,17 @@ public class UnitsManager : MonoBehaviour
     Dictionary<int, Unit> _frameSelectionBuffer = new Dictionary<int, Unit>();
     int _unitsCreatedCount;
     int _unitsLostCount;
+    UnitsProvider _curUnitsProvider;
 
     private void Awake()
     {
         foreach (UnitsProvider unitsProvider in _providers.GetComponentsInChildren<UnitsProvider>())
             _unitsProviders.Add(unitsProvider.unitType, unitsProvider);
+    }
+
+    private void Start()
+    {
+        Game.instance.onGameModeChanged += OnGameModeChanged;
     }
 
     public void RegisterUnit(Unit unit)
@@ -95,7 +101,12 @@ public class UnitsManager : MonoBehaviour
         {
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Input.GetKey(KeyCode.Q))
+            if (_curUnitsProvider != null)
+            {
+                if (Physics.Raycast(ray, out hit, float.MaxValue, LayerMask.GetMask("DeploymentZone")))
+                    _curUnitsProvider.StartDeployment(hit.point);
+            }
+            else if (Input.GetKey(KeyCode.Q))
             {
                 if (Physics.Raycast(ray, out hit, float.MaxValue, LayerMask.GetMask("Ground")))
                     Instantiate(_tankPrefab, hit.point, Quaternion.identity);
@@ -138,5 +149,10 @@ public class UnitsManager : MonoBehaviour
                         kv.Value.movement.GoTo(hit.point);
             }
         }
+    }
+
+    private void OnGameModeChanged(Game.Mode mode, object context)
+    {
+        _curUnitsProvider = (mode == Game.Mode.CallUnits) ? GetUnitsProvider((Defines.UnitType)context) : null;
     }
 }
