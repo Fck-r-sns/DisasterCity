@@ -1216,63 +1216,6 @@ Prefab:
 Transform:
   m_PrefabParentObject: {fileID: 497306, guid: ed8ca91ea98dcb54397b4145af6c0b2e, type: 2}
   m_PrefabInternal: {fileID: 136076363}
---- !u!1 &137413802
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 137413803}
-  - component: {fileID: 137413804}
-  m_Layer: 0
-  m_Name: DragonNavMesh
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &137413803
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 137413802}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 2048131775}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &137413804
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 137413802}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a5ac11cc976e418e8d13136b07e1f52, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_AgentTypeID: 0
-  m_CollectObjects: 0
-  m_Size: {x: 10, y: 10, z: 10}
-  m_Center: {x: 0, y: 2, z: 0}
-  m_LayerMask:
-    serializedVersion: 2
-    m_Bits: 8448
-  m_UseGeometry: 0
-  m_DefaultArea: 0
-  m_IgnoreNavMeshAgent: 1
-  m_IgnoreNavMeshObstacle: 1
-  m_OverrideTileSize: 1
-  m_TileSize: 32
-  m_OverrideVoxelSize: 0
-  m_VoxelSize: 2.3333333
-  m_BuildHeightMesh: 0
-  m_NavMeshData: {fileID: 23800000, guid: cf7a9fe6aa6c6204fb7e741d3b55f4b5, type: 2}
 --- !u!1001 &141137714
 Prefab:
   m_ObjectHideFlags: 0
@@ -4360,14 +4303,11 @@ Prefab:
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1244907028564298, guid: 31c03cf4ae2694c49ad7905285680261, type: 2}
-      propertyPath: m_Name
-      value: Game
-      objectReference: {fileID: 0}
-    - target: {fileID: 4849016957659572, guid: 31c03cf4ae2694c49ad7905285680261, type: 2}
-      propertyPath: m_RootOrder
-      value: 2
-      objectReference: {fileID: 0}
+    - target: {fileID: 114514006674498044, guid: 31c03cf4ae2694c49ad7905285680261,
+        type: 2}
+      propertyPath: _monster
+      value: 
+      objectReference: {fileID: 1109054107}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 31c03cf4ae2694c49ad7905285680261, type: 2}
   m_IsPrefabParent: 0
@@ -10929,6 +10869,12 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 3a1ec01a1a2c63146970e913baf3cade, type: 2}
   m_IsPrefabParent: 0
+--- !u!114 &1109054107 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114233200928210854, guid: 3a1ec01a1a2c63146970e913baf3cade,
+    type: 2}
+  m_PrefabInternal: {fileID: 1107069963}
+  m_Script: {fileID: 11500000, guid: 0786e6814eb036e4b85ac94cdf5fac4a, type: 3}
 --- !u!1001 &1109661509
 Prefab:
   m_ObjectHideFlags: 0
@@ -15631,6 +15577,18 @@ Prefab:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1319542156181218, guid: 1fe826c7ffa421e488b93e9088dcbd6e, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1620934855597486, guid: 1fe826c7ffa421e488b93e9088dcbd6e, type: 2}
+      propertyPath: m_Name
+      value: TankBaseUpgradeDeploymentTime
+      objectReference: {fileID: 0}
+    - target: {fileID: 1184948618121596, guid: 1fe826c7ffa421e488b93e9088dcbd6e, type: 2}
+      propertyPath: m_Name
+      value: AviaBaseUpgradeDeploymentTime
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1fe826c7ffa421e488b93e9088dcbd6e, type: 2}
   m_IsPrefabParent: 0
@@ -19400,63 +19358,6 @@ Prefab:
 Transform:
   m_PrefabParentObject: {fileID: 485844, guid: 955bf00fba2fee14696800975b5622e5, type: 2}
   m_PrefabInternal: {fileID: 2037315669}
---- !u!1 &2042557108
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 2042557109}
-  - component: {fileID: 2042557110}
-  m_Layer: 0
-  m_Name: TanksNavMesh
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2042557109
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 2042557108}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 2048131775}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2042557110
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 2042557108}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a5ac11cc976e418e8d13136b07e1f52, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_AgentTypeID: -334000983
-  m_CollectObjects: 0
-  m_Size: {x: 10, y: 10, z: 10}
-  m_Center: {x: 0, y: 2, z: 0}
-  m_LayerMask:
-    serializedVersion: 2
-    m_Bits: 8448
-  m_UseGeometry: 0
-  m_DefaultArea: 0
-  m_IgnoreNavMeshAgent: 1
-  m_IgnoreNavMeshObstacle: 1
-  m_OverrideTileSize: 1
-  m_TileSize: 128
-  m_OverrideVoxelSize: 0
-  m_VoxelSize: 0.8333333
-  m_BuildHeightMesh: 0
-  m_NavMeshData: {fileID: 23800000, guid: bf5d4b04489e1854ba4b9a56a49dfee2, type: 2}
 --- !u!1001 &2044437794
 Prefab:
   m_ObjectHideFlags: 0
@@ -19679,11 +19580,6 @@ Prefab:
 Transform:
   m_PrefabParentObject: {fileID: 497306, guid: ed8ca91ea98dcb54397b4145af6c0b2e, type: 2}
   m_PrefabInternal: {fileID: 2047932803}
---- !u!4 &2048131775 stripped
-Transform:
-  m_PrefabParentObject: {fileID: 4935270333072562, guid: 31c03cf4ae2694c49ad7905285680261,
-    type: 2}
-  m_PrefabInternal: {fileID: 433926732}
 --- !u!1001 &2053821210
 Prefab:
   m_ObjectHideFlags: 0
