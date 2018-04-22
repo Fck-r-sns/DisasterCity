@@ -52,7 +52,8 @@ public class TechTreeManager : MonoBehaviour
         AddNode(new TechTreeNode(TechTreeNodeId.AviaBaseUpgradeProductionTime, "Avia facility", "Decreases aircrafts' production time", 30f));
         AddNode(new TechTreeNode(TechTreeNodeId.AviaBaseUpgradeCapacity, "Avia depot", "Increases max capacity of avia base", 30f));
         AddNode(new TechTreeNode(TechTreeNodeId.AviaBaseUpgradeDeploymentTime, "Avia logistics centre", "Decreases aircrafts' deployment time", 30f));
-        AddNode(new TechTreeNode(TechTreeNodeId.ArtilleryBase, "Artillery base", "Provides artillery strike", 30f));
+        //AddNode(new TechTreeNode(TechTreeNodeId.ArtilleryBase, "Artillery base", "Provides artillery strike", 30f));
+        AddNode(new TechTreeNode(TechTreeNodeId.ArtilleryBase, "Artillery base", "Provides artillery strike", 3f));
         AddNode(new TechTreeNode(TechTreeNodeId.ArtilleryBaseUpgradeDelayTime, "Artillery aiming centre", "Descreases delay before artillery strike", 40f));
         AddNode(new TechTreeNode(TechTreeNodeId.ArtilleryBaseUpgradeReloadTime, "Artillery logistics", "Descreases artillery strike's reload time", 50f));
         AddNode(new TechTreeNode(TechTreeNodeId.ArtilleryBaseUpgradeDamage, "Artillery ammo facility", "Increases artillery strike's damage", 40f));

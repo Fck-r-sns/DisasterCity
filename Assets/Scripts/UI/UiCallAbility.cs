@@ -7,16 +7,25 @@ public class UiCallAbility : MonoBehaviour, IPointerClickHandler, IPointerEnterH
     [SerializeField]
     Defines.AbilityType _abilityType;
     [SerializeField]
-    Text _rechargeTime;
+    Text _loadState;
+
+    private AbilityProvider _abilityProvider;
 
     private void Start()
     {
-
+        _abilityProvider = Game.unitsManager.GetAbilityProvider(_abilityType);
+        gameObject.SetActive(_abilityProvider.isActivated);
+        _abilityProvider.onActivated += () =>
+        {
+            UpdateLoadStateOutput();
+            gameObject.SetActive(true);
+        };
+        _abilityProvider.onLoadStateChanged += isLoaded => UpdateLoadStateOutput();
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        // Todo: call reserves
+        Game.instance.SetGameMode(Game.Mode.CallAbility, _abilityType);
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -27,5 +36,10 @@ public class UiCallAbility : MonoBehaviour, IPointerClickHandler, IPointerEnterH
     public void OnPointerExit(PointerEventData eventData)
     {
         // Todo: hide description
+    }
+
+    private void UpdateLoadStateOutput()
+    {
+        _loadState.text = _abilityProvider.isLoaded ? "Ready" : "Reloading...";
     }
 }

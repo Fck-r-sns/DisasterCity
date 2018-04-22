@@ -6,7 +6,7 @@ public static class DebugUtilities
     {
         string text = Time.frameCount.ToString();
         foreach (var arg in args)
-            text += " " + arg.ToString();
+            text += " " + (arg != null ? arg.ToString() : "(null)");
         Debug.Log(text);
     }
 }

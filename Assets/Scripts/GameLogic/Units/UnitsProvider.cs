@@ -33,7 +33,7 @@ public class UnitsProvider : MonoBehaviour
     [SerializeField]
     float _deploymentTimeUpgradeValue;
     [SerializeField]
-    TechTreeNodeId _deplymentTimeTechTreeNode;
+    TechTreeNodeId _deploymentTimeTechTreeNode;
 
     [SerializeField]
     GameObject _deploymentZone;
@@ -57,12 +57,11 @@ public class UnitsProvider : MonoBehaviour
     public float unitsDamage { get; private set; }
 
     private Dictionary<TechTreeNodeId, Action> _upgrades = new Dictionary<TechTreeNodeId, Action>();
-    Process _productionProcess;
+    private Process _productionProcess;
 
     public void StartDeployment(Vector3 position, Vector3 direction)
     {
         Game.instance.SetDefaultGameMode();
-        SetDeploymentZoneVisible(false);
         StartDeploymentProcess(position, direction, unitsCount);
         unitsCount = 0;
         if (onUnitsCountChanged != null)
@@ -80,6 +79,7 @@ public class UnitsProvider : MonoBehaviour
         _upgrades.Add(_activationTechTreeNode, Activate);
         _upgrades.Add(_productionTimeTechTreeNode, UpgradeProductionTime);
         _upgrades.Add(_maxUnitsCountTechTreeNode, UpgradeMaxUnitsCount);
+        _upgrades.Add(_deploymentTimeTechTreeNode, UpgradeDeploymentTime);
 
         onUnitsCountChanged += count => TryStartUnitProductionProcess();
         onMaxUnitsCountChanged += count => TryStartUnitProductionProcess();

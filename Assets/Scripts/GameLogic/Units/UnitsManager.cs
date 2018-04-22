@@ -13,17 +13,21 @@ public class UnitsManager : MonoBehaviour
     public event Action<int> onUnitsLostCountChanged;
 
     Dictionary<Defines.UnitType, UnitsProvider> _unitsProviders = new Dictionary<Defines.UnitType, UnitsProvider>();
+    Dictionary<Defines.AbilityType, AbilityProvider> _abilitiesProviders = new Dictionary<Defines.AbilityType, AbilityProvider>();
     Dictionary<int, Unit> _totalUnits = new Dictionary<int, Unit>();
     Dictionary<int, Unit> _selectedUnits = new Dictionary<int, Unit>();
     Dictionary<int, Unit> _frameSelectionBuffer = new Dictionary<int, Unit>();
     int _unitsCreatedCount;
     int _unitsLostCount;
     UnitsProvider _curUnitsProvider;
+    AbilityProvider _curAbilityProvider;
 
     private void Awake()
     {
         foreach (UnitsProvider unitsProvider in _providers.GetComponentsInChildren<UnitsProvider>())
             _unitsProviders.Add(unitsProvider.unitType, unitsProvider);
+        foreach (AbilityProvider abilityProvider in _providers.GetComponentsInChildren<AbilityProvider>())
+            _abilitiesProviders.Add(abilityProvider.abilityType, abilityProvider);
     }
 
     private void Start()
@@ -57,6 +61,11 @@ public class UnitsManager : MonoBehaviour
     public UnitsProvider GetUnitsProvider(Defines.UnitType unitType)
     {
         return _unitsProviders[unitType];
+    }
+
+    public AbilityProvider GetAbilityProvider(Defines.AbilityType abilityType)
+    {
+        return _abilitiesProviders[abilityType];
     }
 
     public void BeginFrameSelection()
@@ -97,6 +106,14 @@ public class UnitsManager : MonoBehaviour
 
     void Update()
     {
+        if (_curAbilityProvider != null)
+        {
+            RaycastHit hit;
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out hit, float.MaxValue, LayerMask.GetMask("Ground")))
+                _curAbilityProvider.SetAffectedAreaMarkerPosition(hit.point);
+        }
+
         if (Input.GetMouseButtonDown(0))
         {
             RaycastHit hit;
@@ -108,6 +125,11 @@ public class UnitsManager : MonoBehaviour
                     DeploymentZone zone = hit.collider.GetComponent<DeploymentZone>();
                     _curUnitsProvider.StartDeployment(hit.point, zone.direction);
                 }
+            }
+            else if (_curAbilityProvider != null)
+            {
+                if (Physics.Raycast(ray, out hit, float.MaxValue, LayerMask.GetMask("Ground")))
+                    _curAbilityProvider.CallAbility(hit.point);
             }
             else if (Input.GetKey(KeyCode.Q))
             {
@@ -157,5 +179,6 @@ public class UnitsManager : MonoBehaviour
     private void OnGameModeChanged(Game.Mode mode, object context)
     {
         _curUnitsProvider = (mode == Game.Mode.CallUnits) ? GetUnitsProvider((Defines.UnitType)context) : null;
+        _curAbilityProvider = (mode == Game.Mode.CallAbility) ? GetAbilityProvider((Defines.AbilityType)context) : null;
     }
 }

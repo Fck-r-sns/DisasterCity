@@ -45,6 +45,7 @@ public class Game : MonoBehaviour
         _curMode = mode;
         if (onGameModeChanged != null)
             onGameModeChanged(_curMode, context);
+        DebugUtilities.Print("Set game mode", mode, context);
     }
 
     public void SetDefaultGameMode()
