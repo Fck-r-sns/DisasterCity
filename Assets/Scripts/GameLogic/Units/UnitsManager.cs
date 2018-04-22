@@ -104,7 +104,10 @@ public class UnitsManager : MonoBehaviour
             if (_curUnitsProvider != null)
             {
                 if (Physics.Raycast(ray, out hit, float.MaxValue, LayerMask.GetMask("DeploymentZone")))
-                    _curUnitsProvider.StartDeployment(hit.point);
+                {
+                    DeploymentZone zone = hit.collider.GetComponent<DeploymentZone>();
+                    _curUnitsProvider.StartDeployment(hit.point, zone.direction);
+                }
             }
             else if (Input.GetKey(KeyCode.Q))
             {

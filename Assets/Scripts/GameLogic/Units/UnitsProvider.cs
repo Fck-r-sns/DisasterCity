@@ -38,6 +38,8 @@ public class UnitsProvider : MonoBehaviour
     [SerializeField]
     GameObject _deploymentZone;
     [SerializeField]
+    float _unitsFormationGap;
+    [SerializeField]
     GameObject _unitPrefab;
 
     public event Action onActivated;
@@ -55,15 +57,16 @@ public class UnitsProvider : MonoBehaviour
     public float unitsDamage { get; private set; }
 
     private Dictionary<TechTreeNodeId, Action> _upgrades = new Dictionary<TechTreeNodeId, Action>();
-    int _unitsCountToDeploy;
+    Process _productionProcess;
 
-    public void StartDeployment(Vector3 position)
+    public void StartDeployment(Vector3 position, Vector3 direction)
     {
         Game.instance.SetDefaultGameMode();
         SetDeploymentZoneVisible(false);
-        _unitsCountToDeploy = unitsCount;
+        StartDeploymentProcess(position, direction, unitsCount);
         unitsCount = 0;
-        StartDeploymentProcess(position);
+        if (onUnitsCountChanged != null)
+            onUnitsCountChanged(unitsCount);
     }
 
     private void Start()
@@ -78,6 +81,9 @@ public class UnitsProvider : MonoBehaviour
         _upgrades.Add(_productionTimeTechTreeNode, UpgradeProductionTime);
         _upgrades.Add(_maxUnitsCountTechTreeNode, UpgradeMaxUnitsCount);
 
+        onUnitsCountChanged += count => TryStartUnitProductionProcess();
+        onMaxUnitsCountChanged += count => TryStartUnitProductionProcess();
+
         Game.techTreeManager.onResearchFinished += OnResearchFinished;
         Game.instance.onGameModeChanged += OnGameModeChanged;
     }
@@ -87,8 +93,7 @@ public class UnitsProvider : MonoBehaviour
         isActivated = true;
         if (onActivated != null)
             onActivated();
-        if (unitsCount < maxUnitsCount)
-            StartUnitProductionProcess();
+        TryStartUnitProductionProcess();
     }
 
     private void UpgradeProductionTime()
@@ -112,17 +117,20 @@ public class UnitsProvider : MonoBehaviour
             onMaxUnitsCountChanged(maxUnitsCount);
     }
 
-    private void StartUnitProductionProcess()
+    private void TryStartUnitProductionProcess()
     {
-        Process p = new TimeProcess("Producing: " + _unitType, productionTime);
-        p.onFinished += OnUnitProduced;
-        Game.processesManager.StartProcess(p);
+        if (unitsCount >= maxUnitsCount || _productionProcess != null)
+            return;
+
+        _productionProcess = new TimeProcess("Producing: " + _unitType, productionTime);
+        _productionProcess.onFinished += OnProductionProcessFinished;
+        Game.processesManager.StartProcess(_productionProcess);
     }
 
-    private void StartDeploymentProcess(Vector3 position)
+    private void StartDeploymentProcess(Vector3 position, Vector3 direction, int unitsCount)
     {
         Process p = new TimeProcess("Arriving: " + _unitType, deploymentTime);
-        p.onFinished += () => OnDeploymentProcessFinished(position);
+        p.onFinished += () => OnDeploymentProcessFinished(position, direction, unitsCount);
         Game.processesManager.StartProcess(p);
     }
 
@@ -131,19 +139,23 @@ public class UnitsProvider : MonoBehaviour
         SetDeploymentZoneVisible(mode == Game.Mode.CallUnits && (Defines.UnitType)context == _unitType);
     }
 
-    private void OnUnitProduced()
+    private void OnProductionProcessFinished()
     {
+        _productionProcess = null;
         unitsCount++;
         if (onUnitsCountChanged != null)
             onUnitsCountChanged(unitsCount);
-        if (unitsCount < maxUnitsCount)
-            StartUnitProductionProcess();
+        TryStartUnitProductionProcess();
     }
 
-    private void OnDeploymentProcessFinished(Vector3 position)
+    private void OnDeploymentProcessFinished(Vector3 position, Vector3 direction, int unitsCount)
     {
-        for (int i = 0; i < _unitsCountToDeploy; i++)
-            Instantiate(_unitPrefab, position, Quaternion.identity);
+        Vector3 formationDirection = (Quaternion.Euler(0, 90f, 0) * direction).normalized;
+        for (int i = 0; i < unitsCount; i++)
+        {
+            float formationGap = _unitsFormationGap * ((i + 1) / 2) * Mathf.Sign(i % 2 - 1);
+            Instantiate(_unitPrefab, position + formationDirection * formationGap, Quaternion.LookRotation(direction));
+        }
     }
 
     private void OnResearchFinished(TechTreeNodeId nodeId)
