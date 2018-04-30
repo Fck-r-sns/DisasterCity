@@ -1805,7 +1805,7 @@ MonoBehaviour:
   _towerPivot: {fileID: 4539410404807824}
   _gunPivot: {fileID: 4361787269006544}
   _shootingPoint: {fileID: 4725761805967818}
-  _projectilePrefab: {fileID: 1478645935025412, guid: aa30859e8191bae4cb265e1f26a3f302,
+  _projectilePrefab: {fileID: 114217168415565930, guid: aa30859e8191bae4cb265e1f26a3f302,
     type: 2}
 --- !u!114 &114491732128922984
 MonoBehaviour:

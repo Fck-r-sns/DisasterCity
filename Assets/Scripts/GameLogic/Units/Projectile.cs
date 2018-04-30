@@ -7,11 +7,17 @@ public class Projectile : MonoBehaviour
 
     float _speed;
     float _damage;
+    float _explosionScale = 1f;
 
     public void SetUp(float speed, float damage)
     {
         _speed = speed;
         _damage = damage;
+    }
+
+    public void SetExplosionScale(float scale)
+    {
+        _explosionScale = scale;
     }
 
     void Awake()
@@ -30,6 +36,7 @@ public class Projectile : MonoBehaviour
         Quaternion rot = Quaternion.FromToRotation(Vector3.up, contact.normal);
         Vector3 pos = contact.point;
         GameObject explosion = Instantiate(_explosionsPrefabs[Random.Range(0, _explosionsPrefabs.Length)], pos, rot);
+        explosion.transform.localScale *= _explosionScale;
         Destroy(gameObject);
         Destroy(explosion, 1f);
 

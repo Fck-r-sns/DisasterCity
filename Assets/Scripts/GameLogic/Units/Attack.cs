@@ -15,7 +15,7 @@ public class Attack : UnitComponent
     [SerializeField]
     Transform _shootingPoint;
     [SerializeField]
-    GameObject _projectilePrefab;
+    Projectile _projectilePrefab;
 
     Transform _target;
     float _lastShotTime;
@@ -27,8 +27,7 @@ public class Attack : UnitComponent
 
     void Shoot()
     {
-        Projectile projectile = Instantiate(_projectilePrefab, _shootingPoint.position, Quaternion.LookRotation(_shootingPoint.forward))
-            .GetComponent<Projectile>();
+        Projectile projectile = Instantiate(_projectilePrefab, _shootingPoint.position, Quaternion.LookRotation(_shootingPoint.forward));
         projectile.transform.Rotate(90f, 0f, 0f, Space.Self);
         projectile.SetUp(_projectileSpeed, _projectileDamage);
     }

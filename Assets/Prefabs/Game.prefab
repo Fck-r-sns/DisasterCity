@@ -20,7 +20,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4686479356470016}
   - component: {fileID: 33961507387849868}
-  - component: {fileID: 136593414018001536}
   - component: {fileID: 23425044628681398}
   m_Layer: 0
   m_Name: AffectedAreaMarker
@@ -89,9 +88,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4730457453828668}
   - component: {fileID: 33635928050112956}
-  - component: {fileID: 64712989171497370}
   - component: {fileID: 23317267245674828}
   - component: {fileID: 114919005550520500}
+  - component: {fileID: 64712989171497370}
   m_Layer: 15
   m_Name: Zone (3)
   m_TagString: Untagged
@@ -156,9 +155,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4926291239909806}
   - component: {fileID: 33341896385619126}
-  - component: {fileID: 64557928730733832}
   - component: {fileID: 23701216094582966}
   - component: {fileID: 114273877107363986}
+  - component: {fileID: 64557928730733832}
   m_Layer: 15
   m_Name: Zone (2)
   m_TagString: Untagged
@@ -210,7 +209,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4849016957659572}
   m_Layer: 0
-  m_Name: Providers
+  m_Name: UnitsAndAbilities
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -244,9 +243,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4901508430087668}
   - component: {fileID: 33497197910219704}
-  - component: {fileID: 64550536369020498}
   - component: {fileID: 23675447029255074}
   - component: {fileID: 114523705833460538}
+  - component: {fileID: 64550536369020498}
   m_Layer: 15
   m_Name: Zone (1)
   m_TagString: Untagged
@@ -1026,6 +1025,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23d0bb1f905aca64abbe95ef8a7f6efa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _projectilesCount: 100
+  _projectileSpawnHeightMin: 100
+  _projectileSpawnHeightMax: 300
+  _projectileSpeed: 200
+  _projectilePrefab: {fileID: 114217168415565930, guid: aa30859e8191bae4cb265e1f26a3f302,
+    type: 2}
 --- !u!114 &114919005550520500
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1066,16 +1071,3 @@ MonoBehaviour:
   m_VoxelSize: 2.3333333
   m_BuildHeightMesh: 0
   m_NavMeshData: {fileID: 23800000, guid: cf7a9fe6aa6c6204fb7e741d3b55f4b5, type: 2}
---- !u!136 &136593414018001536
-CapsuleCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1015063248537970}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.5
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}

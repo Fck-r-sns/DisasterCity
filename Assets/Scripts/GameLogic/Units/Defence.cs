@@ -12,7 +12,7 @@ public class Defence : UnitComponent
     {
         GameObject explosion = Instantiate(_explosionsPrefabs[UnityEngine.Random.Range(0, _explosionsPrefabs.Length)],
             transform.position, Quaternion.identity);
-        explosion.transform.localScale = Vector3.one * 10f;
+        explosion.transform.localScale *= 10f;
         Destroy(explosion, 1f);
 
         if (onDestroyed != null)
