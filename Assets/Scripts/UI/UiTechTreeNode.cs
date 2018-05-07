@@ -6,6 +6,8 @@ public class UiTechTreeNode : MonoBehaviour, IPointerClickHandler, IPointerEnter
 {
     [SerializeField]
     private TechTreeNodeId _id;
+    [SerializeField]
+    private GameObject _connectionLine;
 
     private TechTreeNode _node;
     private bool _techTreeIsBusy;
@@ -40,6 +42,8 @@ public class UiTechTreeNode : MonoBehaviour, IPointerClickHandler, IPointerEnter
     private void OnNodeStateChanged(TechTreeNodeState state)
     {
         gameObject.SetActive(state != TechTreeNodeState.Hidden);
+        if (_connectionLine != null)
+            _connectionLine.gameObject.SetActive(state != TechTreeNodeState.Hidden);
         // Todo: visually show research states
     }
 }
