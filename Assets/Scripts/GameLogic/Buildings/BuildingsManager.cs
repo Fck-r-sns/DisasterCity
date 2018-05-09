@@ -35,7 +35,7 @@ public class BuildingsManager : MonoBehaviour
             {
                 RaycastHit hit;
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                if (Physics.Raycast(ray, out hit, float.MaxValue, LayerMask.GetMask("Buildings")))
+                if (Physics.Raycast(ray, out hit, float.MaxValue, Defines.Layers.buildingsMask))
                 {
                     BuildingDamageReceiver building = hit.collider.GetComponent<BuildingDamageReceiver>();
                     if (building != null)

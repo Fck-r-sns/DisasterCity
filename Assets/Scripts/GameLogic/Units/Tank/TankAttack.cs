@@ -54,9 +54,10 @@ public class TankAttack : Attack
             {
                 RaycastHit hit;
                 Ray ray = new Ray(_shootingPoint.position, _shootingPoint.forward);
-                if (Physics.Raycast(ray, out hit, float.MaxValue, LayerMask.GetMask("ProjectileCollider", "Buildings", "Units")))
+                int layerMask = Defines.Layers.Combine(Defines.Layers.projectileColliderMask, Defines.Layers.buildingsMask, Defines.Layers.unitsMask);
+                if (Physics.Raycast(ray, out hit, float.MaxValue, layerMask))
                 {
-                    if (hit.collider.gameObject.layer == LayerMask.NameToLayer("ProjectileCollider"))
+                    if (hit.collider.gameObject.layer == Defines.Layers.projectileColliderLayer)
                     {
                         _lastShotTime = Time.time;
                         Shoot();

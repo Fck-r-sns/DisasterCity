@@ -112,21 +112,37 @@ public class UnitsManager : MonoBehaviour
 
     void Update()
     {
-        if (_curAbilityProvider != null)
-        {
-            RaycastHit hit;
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out hit, float.MaxValue, LayerMask.GetMask("Ground")))
-                _curAbilityProvider.SetAffectedAreaMarkerPosition(hit.point);
-        }
+        bool leftMouseButtonDown = Input.GetMouseButtonDown(0);
+        bool rightMouseButtonDown = Input.GetMouseButtonDown(1);
+        bool middleMouseButtonDown = Input.GetMouseButtonDown(2);
+        bool noMouseButtonsDown = !leftMouseButtonDown && !rightMouseButtonDown && !middleMouseButtonDown;
 
-        if (Input.GetMouseButtonDown(0))
+        RaycastHit hit;
+        if (noMouseButtonsDown)
         {
-            RaycastHit hit;
+            if (_curAbilityProvider != null)
+            {
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                if (Physics.Raycast(ray, out hit, float.MaxValue, Defines.Layers.groundMask))
+                    _curAbilityProvider.SetAffectedAreaMarkerPosition(hit.point);
+            }
+            else if (_selectedUnits.Count > 0)
+            {
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                if (Physics.Raycast(ray, out hit, float.MaxValue, Defines.Layers.projectileColliderMask))
+                {
+                    var attackableTargetCollider = hit.collider.GetComponent<AttackableTargetCollider>();
+                    if (attackableTargetCollider != null)
+                        attackableTargetCollider.attackPoint.SetMarkerEnabled(true);
+                }
+            }
+        }
+        else if (leftMouseButtonDown)
+        {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (_curUnitsProvider != null)
             {
-                if (Physics.Raycast(ray, out hit, float.MaxValue, LayerMask.GetMask("DeploymentZone")))
+                if (Physics.Raycast(ray, out hit, float.MaxValue, Defines.Layers.deploymentZoneMask))
                 {
                     DeploymentZone zone = hit.collider.GetComponent<DeploymentZone>();
                     _curUnitsProvider.StartDeployment(hit.point, zone.direction);
@@ -134,17 +150,17 @@ public class UnitsManager : MonoBehaviour
             }
             else if (_curAbilityProvider != null)
             {
-                if (Physics.Raycast(ray, out hit, float.MaxValue, LayerMask.GetMask("Ground")))
+                if (Physics.Raycast(ray, out hit, float.MaxValue, Defines.Layers.groundMask))
                     _curAbilityProvider.CallAbility(hit.point);
             }
             else if (Input.GetKey(_tankKeyCode))
             {
-                if (Physics.Raycast(ray, out hit, float.MaxValue, LayerMask.GetMask("Ground")))
+                if (Physics.Raycast(ray, out hit, float.MaxValue, Defines.Layers.groundMask))
                     Instantiate(_tankPrefab, hit.point, Quaternion.identity);
             }
             else if (Input.GetKey(_aircraftKeyCode))
             {
-                if (Physics.Raycast(ray, out hit, float.MaxValue, LayerMask.GetMask("Ground")))
+                if (Physics.Raycast(ray, out hit, float.MaxValue, Defines.Layers.groundMask))
                     Instantiate(_aircraftPrefab, hit.point, Quaternion.identity);
             }
             else
@@ -173,12 +189,10 @@ public class UnitsManager : MonoBehaviour
                 }
             }
         }
-
-        if (Input.GetMouseButtonDown(1))
+        else if (rightMouseButtonDown)
         {
-            RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out hit, float.MaxValue, LayerMask.GetMask("Ground")))
+            if (Physics.Raycast(ray, out hit, float.MaxValue, Defines.Layers.groundMask))
             {
                 foreach (var kv in _selectedUnits)
                     if (kv.Value.movement != null)
