@@ -926,7 +926,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _providers: {fileID: 4849016957659572}
+  _tankKeyCode: 121
   _tankPrefab: {fileID: 1636962970617598, guid: 4bf374b290f04874998d87a60df8f7b1,
+    type: 2}
+  _aircraftKeyCode: 117
+  _aircraftPrefab: {fileID: 1404073457575064, guid: d256a613b68560f44a3c5a5357ede630,
     type: 2}
 --- !u!114 &114514006674498044
 MonoBehaviour:

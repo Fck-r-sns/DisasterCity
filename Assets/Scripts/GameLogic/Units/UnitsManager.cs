@@ -5,9 +5,15 @@ using UnityEngine;
 public class UnitsManager : MonoBehaviour
 {
     [SerializeField]
-    Transform _providers;
+    private Transform _providers;
     [SerializeField]
-    GameObject _tankPrefab;
+    private KeyCode _tankKeyCode;
+    [SerializeField]
+    private GameObject _tankPrefab;
+    [SerializeField]
+    private KeyCode _aircraftKeyCode;
+    [SerializeField]
+    private GameObject _aircraftPrefab;
 
     public event Action<int> onUnitsCreatedCountChanged;
     public event Action<int> onUnitsLostCountChanged;
@@ -131,10 +137,15 @@ public class UnitsManager : MonoBehaviour
                 if (Physics.Raycast(ray, out hit, float.MaxValue, LayerMask.GetMask("Ground")))
                     _curAbilityProvider.CallAbility(hit.point);
             }
-            else if (Input.GetKey(KeyCode.Q))
+            else if (Input.GetKey(_tankKeyCode))
             {
                 if (Physics.Raycast(ray, out hit, float.MaxValue, LayerMask.GetMask("Ground")))
                     Instantiate(_tankPrefab, hit.point, Quaternion.identity);
+            }
+            else if (Input.GetKey(_aircraftKeyCode))
+            {
+                if (Physics.Raycast(ray, out hit, float.MaxValue, LayerMask.GetMask("Ground")))
+                    Instantiate(_aircraftPrefab, hit.point, Quaternion.identity);
             }
             else
             {
@@ -171,7 +182,7 @@ public class UnitsManager : MonoBehaviour
             {
                 foreach (var kv in _selectedUnits)
                     if (kv.Value.movement != null)
-                        kv.Value.movement.GoTo(hit.point);
+                        kv.Value.movement.SetTargetPosition(hit.point);
             }
         }
     }
