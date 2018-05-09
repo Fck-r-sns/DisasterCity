@@ -5,7 +5,13 @@ public class AircraftMovement : Movement
     [SerializeField]
     private float _height;
     [SerializeField]
-    private float _fixedSpeed;
+    private float _minSpeed;
+    [SerializeField]
+    private float _maxSpeed;
+    [SerializeField]
+    private float _accelerationSpeed;
+    [SerializeField]
+    private float _breakingSpeed;
     [SerializeField]
     private float _maxTurnAngle;
 
@@ -26,7 +32,7 @@ public class AircraftMovement : Movement
 
         transform.position = new Vector3(transform.position.x, _height, transform.position.z);
         _curDirection = transform.forward;
-        _curSpeed = _fixedSpeed;
+        _curSpeed = _minSpeed;
         SetTargetPosition(transform.position);
     }
 
@@ -47,6 +53,9 @@ public class AircraftMovement : Movement
     {
         Vector3 toTarget = _targetPosition - transform.position;
         _curDirection = Vector3.RotateTowards(_curDirection, toTarget, _maxTurnAngle * Time.deltaTime * Mathf.Deg2Rad, 0f);
+        float targetSpeed = Mathf.Lerp(_minSpeed, _maxSpeed, 1f - Mathf.Clamp01(Vector3.Angle(_curDirection, toTarget) / 180f));
+        float acceleration = targetSpeed >= _curSpeed ? _accelerationSpeed : _breakingSpeed;
+        _curSpeed = Mathf.MoveTowards(_curSpeed, targetSpeed, acceleration * Time.deltaTime);
         transform.position += _curDirection * _curSpeed * Time.deltaTime;
         transform.rotation = Quaternion.LookRotation(_curDirection);
     }

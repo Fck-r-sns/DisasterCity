@@ -283,7 +283,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _height: 70
-  _fixedSpeed: 50
+  _minSpeed: 10
+  _maxSpeed: 70
+  _accelerationSpeed: 50
+  _breakingSpeed: 30
   _maxTurnAngle: 120
 --- !u!114 &114214942983137728
 MonoBehaviour:
