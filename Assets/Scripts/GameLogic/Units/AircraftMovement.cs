@@ -14,11 +14,18 @@ public class AircraftMovement : Movement
     private float _breakingSpeed;
     [SerializeField]
     private float _maxTurnAngle;
+    [SerializeField]
+    private float _maxBodyTurn;
+    [SerializeField]
+    private float _bodyTurnSpeed;
+    [SerializeField]
+    private Transform _body;
 
     private Transform _targetPointer;
     private Vector3 _targetPosition;
     private Vector3 _curDirection;
     private float _curSpeed;
+    private float _curBodyTurn;
 
     void Start()
     {
@@ -52,11 +59,21 @@ public class AircraftMovement : Movement
     void Update()
     {
         Vector3 toTarget = _targetPosition - transform.position;
-        _curDirection = Vector3.RotateTowards(_curDirection, toTarget, _maxTurnAngle * Time.deltaTime * Mathf.Deg2Rad, 0f);
-        float targetSpeed = Mathf.Lerp(_minSpeed, _maxSpeed, 1f - Mathf.Clamp01(Vector3.Angle(_curDirection, toTarget) / 180f));
+        float maxTurnAngle = _maxTurnAngle * Time.deltaTime;
+        Vector3 newDirection = Vector3.RotateTowards(_curDirection, toTarget, maxTurnAngle * Mathf.Deg2Rad, 0f);
+        transform.rotation = Quaternion.LookRotation(newDirection);
+
+        float targetSpeed = Mathf.Lerp(_minSpeed, _maxSpeed, 1f - Mathf.Clamp01(Vector3.Angle(newDirection, toTarget) / 180f));
         float acceleration = targetSpeed >= _curSpeed ? _accelerationSpeed : _breakingSpeed;
         _curSpeed = Mathf.MoveTowards(_curSpeed, targetSpeed, acceleration * Time.deltaTime);
-        transform.position += _curDirection * _curSpeed * Time.deltaTime;
-        transform.rotation = Quaternion.LookRotation(_curDirection);
+        transform.position += newDirection * _curSpeed * Time.deltaTime;
+
+        float normalizedTurnAngle = Vector3.SignedAngle(newDirection, _curDirection, Vector3.up) / maxTurnAngle;
+        float normalizedSpeed = (_curSpeed - _minSpeed) / (_maxSpeed - _minSpeed);
+        float targetBodyTurn = normalizedTurnAngle * Mathf.Lerp(0.1f, 1f, normalizedSpeed) * _maxBodyTurn;
+        _curBodyTurn = Mathf.MoveTowards(_curBodyTurn, targetBodyTurn, _bodyTurnSpeed * Time.deltaTime);
+        _body.transform.localEulerAngles = new Vector3(0f, 0f, _curBodyTurn);
+
+        _curDirection = newDirection;
     }
 }

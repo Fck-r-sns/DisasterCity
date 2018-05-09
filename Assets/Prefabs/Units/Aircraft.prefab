@@ -301,6 +301,9 @@ MonoBehaviour:
   _accelerationSpeed: 50
   _breakingSpeed: 30
   _maxTurnAngle: 120
+  _maxBodyTurn: 60
+  _bodyTurnSpeed: 150
+  _body: {fileID: 4499532332067300}
 --- !u!114 &114214942983137728
 MonoBehaviour:
   m_ObjectHideFlags: 1
