@@ -27,6 +27,7 @@ public class UnitsManager : MonoBehaviour
     int _unitsLostCount;
     UnitsProvider _curUnitsProvider;
     AbilityProvider _curAbilityProvider;
+    AttackableTargetPoint _curAttackableTargetPoint;
 
     private void Awake()
     {
@@ -126,14 +127,25 @@ public class UnitsManager : MonoBehaviour
                 if (Physics.Raycast(ray, out hit, float.MaxValue, Defines.Layers.groundMask))
                     _curAbilityProvider.SetAffectedAreaMarkerPosition(hit.point);
             }
-            else if (_selectedUnits.Count > 0)
+
+            if (_selectedUnits.Count > 0)
             {
+                AttackableTargetPoint newAttackableTargetPoint = null;
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                 if (Physics.Raycast(ray, out hit, float.MaxValue, Defines.Layers.projectileColliderMask))
                 {
-                    var attackableTargetCollider = hit.collider.GetComponent<AttackableTargetCollider>();
-                    if (attackableTargetCollider != null)
-                        attackableTargetCollider.attackPoint.SetMarkerEnabled(true);
+                    var collider = hit.collider.GetComponent<AttackableTargetCollider>();
+                    if (collider != null)
+                        newAttackableTargetPoint = collider.attackPoint;
+                }
+
+                if (newAttackableTargetPoint != _curAttackableTargetPoint)
+                {
+                    if (_curAttackableTargetPoint != null)
+                        _curAttackableTargetPoint.SetMarkerEnabled(false);
+                    _curAttackableTargetPoint = newAttackableTargetPoint;
+                    if (_curAttackableTargetPoint != null)
+                        _curAttackableTargetPoint.SetMarkerEnabled(true);
                 }
             }
         }
@@ -191,12 +203,24 @@ public class UnitsManager : MonoBehaviour
         }
         else if (rightMouseButtonDown)
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out hit, float.MaxValue, Defines.Layers.groundMask))
+            if (_selectedUnits.Count > 0)
             {
-                foreach (var kv in _selectedUnits)
-                    if (kv.Value.movement != null)
-                        kv.Value.movement.SetTargetPosition(hit.point);
+                if (_curAttackableTargetPoint != null)
+                {
+                    foreach (var kv in _selectedUnits)
+                        if (kv.Value.attack != null)
+                            kv.Value.attack.SetTarget(_curAttackableTargetPoint.transform);
+                }
+                else
+                {
+                    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                    if (Physics.Raycast(ray, out hit, float.MaxValue, Defines.Layers.groundMask))
+                    {
+                        foreach (var kv in _selectedUnits)
+                            if (kv.Value.movement != null)
+                                kv.Value.movement.SetTargetPosition(hit.point);
+                    }
+                }
             }
         }
     }
