@@ -17,6 +17,8 @@ public class UnitsManager : MonoBehaviour
 
     public event Action<int> onUnitsCreatedCountChanged;
     public event Action<int> onUnitsLostCountChanged;
+    public event Action onUnitsSelectionBecameEmpty;
+    public event Action<AttackableTargetPoint> onCurAttackableTargetPointChanged;
 
     Dictionary<Defines.UnitType, UnitsProvider> _unitsProviders = new Dictionary<Defines.UnitType, UnitsProvider>();
     Dictionary<Defines.AbilityType, AbilityProvider> _abilitiesProviders = new Dictionary<Defines.AbilityType, AbilityProvider>();
@@ -52,8 +54,8 @@ public class UnitsManager : MonoBehaviour
 
     public void UnregisterUnit(Unit unit)
     {
+        RemoveUnitFromSelection(unit);
         _totalUnits.Remove(unit.id);
-        _selectedUnits.Remove(unit.id);
         _frameSelectionBuffer.Remove(unit.id);
         _unitsLostCount++;
         if (onUnitsLostCountChanged != null)
@@ -100,8 +102,20 @@ public class UnitsManager : MonoBehaviour
     public void EndFrameSelection()
     {
         foreach (var kv in _frameSelectionBuffer)
-            _selectedUnits[kv.Key] = kv.Value;
+            AddUnitToSelection(kv.Value);
         _frameSelectionBuffer.Clear();
+    }
+
+    void AddUnitToSelection(Unit unit)
+    {
+        _selectedUnits[unit.id] = unit;
+    }
+
+    void RemoveUnitFromSelection(Unit unit)
+    {
+        _selectedUnits.Remove(unit.id);
+        if (_selectedUnits.Count == 0 && onUnitsSelectionBecameEmpty != null)
+            onUnitsSelectionBecameEmpty();
     }
 
     void ResetSelection()
@@ -109,6 +123,8 @@ public class UnitsManager : MonoBehaviour
         foreach (var kv in _selectedUnits)
             kv.Value.SetSelected(false);
         _selectedUnits.Clear();
+        if (onUnitsSelectionBecameEmpty != null)
+            onUnitsSelectionBecameEmpty();
     }
 
     void Update()
@@ -141,11 +157,9 @@ public class UnitsManager : MonoBehaviour
 
                 if (newAttackableTargetPoint != _curAttackableTargetPoint)
                 {
-                    if (_curAttackableTargetPoint != null)
-                        _curAttackableTargetPoint.SetMarkerEnabled(false);
                     _curAttackableTargetPoint = newAttackableTargetPoint;
-                    if (_curAttackableTargetPoint != null)
-                        _curAttackableTargetPoint.SetMarkerEnabled(true);
+                    if (onCurAttackableTargetPointChanged != null)
+                        onCurAttackableTargetPointChanged(_curAttackableTargetPoint);
                 }
             }
         }
@@ -194,9 +208,9 @@ public class UnitsManager : MonoBehaviour
                         }
 
                         if (unit.isSelected)
-                            _selectedUnits[unit.id] = unit;
+                            AddUnitToSelection(unit);
                         else
-                            _selectedUnits.Remove(unit.id);
+                            RemoveUnitFromSelection(unit);
                     }
                 }
             }
