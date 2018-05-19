@@ -36,7 +36,7 @@ public class TankMovement : Movement
         Destroy(_targetPointer.gameObject);
     }
 
-    public override void SetTargetPosition(Vector3 position)
+    public override void SetMovementTarget(Vector3 position)
     {
         position.y = _yOffset;
         _targetPosition = position;

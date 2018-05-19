@@ -2,6 +2,9 @@
 
 public class AircraftMovement : Movement
 {
+    private float AttackDistance = 150f;
+    private float AttackTurnStopSqrRadius = 100f;
+
     [SerializeField]
     private float _height;
     [SerializeField]
@@ -21,49 +24,79 @@ public class AircraftMovement : Movement
     [SerializeField]
     private Transform _body;
 
-    private Transform _targetPointer;
-    private Vector3 _targetPosition;
+    private Transform _movementPointer;
+    private Vector3 _movementTarget;
+    private AttackableTarget _attackTarget;
     private Vector3 _curDirection;
     private float _curSpeed;
     private float _curBodyTurn;
 
-    void Start()
+    private void Start()
     {
-        _targetPointer = GameObject.CreatePrimitive(PrimitiveType.Cylinder).transform;
-        _targetPointer.localScale = new Vector3(0.3f, _height, 0.3f);
-        _targetPointer.position = new Vector3(0f, _height / 2f, 0f);
-        _targetPointer.gameObject.SetActive(false);
-        Destroy(_targetPointer.GetComponent<Collider>());
+        _movementPointer = GameObject.CreatePrimitive(PrimitiveType.Cylinder).transform;
+        _movementPointer.localScale = new Vector3(0.3f, _height, 0.3f);
+        _movementPointer.position = new Vector3(0f, _height / 2f, 0f);
+        _movementPointer.gameObject.SetActive(false);
+        Destroy(_movementPointer.GetComponent<Collider>());
 
         unit.defence.onDestroyed += OnDestroyed;
+        unit.attack.onTargetChanged += OnAttackTargetChanged;
 
         transform.position = new Vector3(transform.position.x, _height, transform.position.z);
         _curDirection = transform.forward;
         _curSpeed = _minSpeed;
-        SetTargetPosition(transform.position);
+        SetMovementTarget(transform.position);
     }
 
-    void OnDestroyed()
+    private void OnDestroyed()
     {
-        Destroy(_targetPointer.gameObject);
+        Destroy(_movementPointer.gameObject);
     }
 
-    public override void SetTargetPosition(Vector3 position)
+    private void OnAttackTargetChanged(AttackableTarget target)
+    {
+        _attackTarget = target;
+        if (_attackTarget != null)
+            SetMovementTargetInternal(GetMovementPositionForAttack());
+    }
+
+    public override void SetMovementTarget(Vector3 position)
+    {
+        SetMovementTargetInternal(position);
+        _attackTarget = null; // Disable target following after manual position set
+    }
+
+    private void SetMovementTargetInternal(Vector3 position)
     {
         position.y = _height;
-        _targetPosition = position;
-        _targetPointer.position = position;
-        _targetPointer.gameObject.SetActive(true);
+        _movementTarget = position;
+        _movementPointer.position = position;
+        _movementPointer.gameObject.SetActive(true);
     }
 
-    void Update()
+    private Vector3 GetMovementPositionForAttack()
     {
-        Vector3 toTarget = _targetPosition - transform.position;
+        Vector3 targetPosition = _attackTarget.transform.position;
+        targetPosition.y = transform.position.y;
+        Vector3 direction = (targetPosition - transform.position).normalized;
+        return _attackTarget.transform.position + direction * AttackDistance;
+    }
+
+    private void Update()
+    {
+        Vector3 toMovementTarget = _movementTarget - transform.position;
+        if (_attackTarget != null)
+        {
+            Vector3 toAttackTarget = _attackTarget.transform.position - transform.position;
+            if (Vector3.SqrMagnitude(toMovementTarget) <= AttackTurnStopSqrRadius || Vector3.Dot(transform.forward, toAttackTarget) > 0f)
+                SetMovementTargetInternal(GetMovementPositionForAttack());
+        }
+
         float maxTurnAngle = _maxTurnAngle * Time.deltaTime;
-        Vector3 newDirection = Vector3.RotateTowards(_curDirection, toTarget, maxTurnAngle * Mathf.Deg2Rad, 0f);
+        Vector3 newDirection = Vector3.RotateTowards(_curDirection, toMovementTarget, maxTurnAngle * Mathf.Deg2Rad, 0f);
         transform.rotation = Quaternion.LookRotation(newDirection);
 
-        float targetSpeed = Mathf.Lerp(_minSpeed, _maxSpeed, 1f - Mathf.Clamp01(Vector3.Angle(newDirection, toTarget) / 180f));
+        float targetSpeed = Mathf.Lerp(_minSpeed, _maxSpeed, 1f - Mathf.Clamp01(Vector3.Angle(newDirection, toMovementTarget) / 180f));
         float acceleration = targetSpeed >= _curSpeed ? _accelerationSpeed : _breakingSpeed;
         _curSpeed = Mathf.MoveTowards(_curSpeed, targetSpeed, acceleration * Time.deltaTime);
         transform.position += newDirection * _curSpeed * Time.deltaTime;

@@ -237,7 +237,7 @@ public class UnitsManager : MonoBehaviour
                     {
                         foreach (var kv in _selectedUnits)
                             if (kv.Value.movement != null)
-                                kv.Value.movement.SetTargetPosition(hit.point);
+                                kv.Value.movement.SetMovementTarget(hit.point);
                     }
                 }
             }
