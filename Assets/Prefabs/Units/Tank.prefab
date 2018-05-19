@@ -1799,14 +1799,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cbaa2302d8c776458e16ff26d0763f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _shootingPeriod: 3
-  _projectileSpeed: 40
+  _reloadTime: 2
+  _projectileSpeed: 400
   _projectileDamage: 10
-  _towerPivot: {fileID: 4539410404807824}
-  _gunPivot: {fileID: 4361787269006544}
-  _shootingPoint: {fileID: 4725761805967818}
   _projectilePrefab: {fileID: 114217168415565930, guid: aa30859e8191bae4cb265e1f26a3f302,
     type: 2}
+  _shootingPoint: {fileID: 4725761805967818}
+  _towerPivot: {fileID: 4539410404807824}
+  _gunPivot: {fileID: 4361787269006544}
 --- !u!114 &114491732128922984
 MonoBehaviour:
   m_ObjectHideFlags: 1
