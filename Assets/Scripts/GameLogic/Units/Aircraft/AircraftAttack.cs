@@ -18,8 +18,7 @@ public class AircraftAttack : Attack
             _gunPivot.localEulerAngles = new Vector3(
                 Mathf.Clamp(_gunPivot.localEulerAngles.x, 0f, _maxGunLatitude),
                 Mathf.Clamp(_gunPivot.localEulerAngles.y, -_maxGunLongitude, _maxGunLongitude),
-                0f
-                );
+                0f);
 
             if (IsLoaded() && IsTargetInLineOfSight())
                 Shoot();
