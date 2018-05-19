@@ -226,7 +226,7 @@ public class UnitsManager : MonoBehaviour
                 {
                     foreach (var kv in _selectedUnits)
                         if (kv.Value.attack != null)
-                            kv.Value.attack.SetTarget(_curAttackableTargetPoint.transform);
+                            kv.Value.attack.SetTarget(_curAttackableTargetPoint);
                     if (onAttackableTargetPointSelected != null)
                         onAttackableTargetPointSelected(_curAttackableTargetPoint);
                 }

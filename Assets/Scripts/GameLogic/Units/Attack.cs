@@ -2,6 +2,8 @@
 
 public abstract class Attack : UnitComponent
 {
+    const float SphereCastProjectileRadiusCoef = 1.1f;
+
     [SerializeField]
     private float _reloadTime = 3f;
     [SerializeField]
@@ -13,12 +15,12 @@ public abstract class Attack : UnitComponent
     [SerializeField]
     protected Transform _shootingPoint;
 
-    protected Transform _target;
+    protected AttackableTargetPoint _targetPoint;
     private float _lastShotTime;
 
-    public void SetTarget(Transform target)
+    public void SetTarget(AttackableTargetPoint targetPoint)
     {
-        _target = target;
+        _targetPoint = targetPoint;
     }
 
     protected bool IsLoaded()
@@ -28,10 +30,29 @@ public abstract class Attack : UnitComponent
 
     protected bool IsTargetInLineOfSight()
     {
-        RaycastHit hit;
+        if (_targetPoint == null)
+            return false;
+
         Ray ray = new Ray(_shootingPoint.position, _shootingPoint.forward);
         int layerMask = Defines.Layers.Combine(Defines.Layers.projectileColliderMask, Defines.Layers.buildingsMask, Defines.Layers.unitsMask);
-        return Physics.Raycast(ray, out hit, float.MaxValue, layerMask) && hit.collider.gameObject.layer == Defines.Layers.projectileColliderLayer;
+        float projectileRadius = Mathf.Max(_projectilePrefab.transform.localScale.x, _projectilePrefab.transform.localScale.z) / 2f;
+        float sphereCastRadius = projectileRadius * SphereCastProjectileRadiusCoef;
+        RaycastHit[] hits = Physics.SphereCastAll(ray, sphereCastRadius, float.MaxValue, layerMask);
+        float minDistance = float.MaxValue;
+        int nearestHitLayer = 0;
+        bool targetInLineOfSight = false;
+        foreach (var hit in hits)
+        {
+            if (hit.distance < minDistance)
+            {
+                nearestHitLayer = hit.collider.gameObject.layer;
+                minDistance = hit.distance;
+            }
+            var targetCollider = hit.collider.GetComponent<AttackableTargetCollider>();
+            if (targetCollider != null && targetCollider.attackPoint == _targetPoint)
+                targetInLineOfSight = true;
+        }
+        return targetInLineOfSight && nearestHitLayer == Defines.Layers.projectileColliderLayer;
     }
 
     protected void Shoot()

@@ -11,9 +11,9 @@ public class AircraftAttack : Attack
 
     void Update()
     {
-        if (_target != null)
+        if (_targetPoint != null)
         {
-            Vector3 directionToTarget = _target.transform.position - transform.position;
+            Vector3 directionToTarget = _targetPoint.transform.position - transform.position;
             _gunPivot.rotation = Quaternion.LookRotation(directionToTarget);
             _gunPivot.localEulerAngles = new Vector3(
                 Mathf.Clamp(_gunPivot.localEulerAngles.x, 0f, _maxGunLatitude),
