@@ -18,8 +18,8 @@ public class UnitsManager : MonoBehaviour
     public event Action<int> onUnitsCreatedCountChanged;
     public event Action<int> onUnitsLostCountChanged;
     public event Action<int> onUnitsSelectionChanged;
-    public event Action<AttackableTargetPoint> onCurAttackableTargetPointChanged;
-    public event Action<AttackableTargetPoint> onAttackableTargetPointSelected;
+    public event Action<AttackableTarget> onAttackableTargetHovered;
+    public event Action<AttackableTarget> onAttackableTargetSelected;
 
     Dictionary<Defines.UnitType, UnitsProvider> _unitsProviders = new Dictionary<Defines.UnitType, UnitsProvider>();
     Dictionary<Defines.AbilityType, AbilityProvider> _abilitiesProviders = new Dictionary<Defines.AbilityType, AbilityProvider>();
@@ -30,7 +30,7 @@ public class UnitsManager : MonoBehaviour
     int _unitsLostCount;
     UnitsProvider _curUnitsProvider;
     AbilityProvider _curAbilityProvider;
-    AttackableTargetPoint _curAttackableTargetPoint;
+    AttackableTarget _curHoveredTarget;
 
     private void Awake()
     {
@@ -149,20 +149,20 @@ public class UnitsManager : MonoBehaviour
 
             if (_selectedUnits.Count > 0)
             {
-                AttackableTargetPoint newAttackableTargetPoint = null;
+                AttackableTarget newHoveredTarget = null;
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                 if (Physics.Raycast(ray, out hit, float.MaxValue, Defines.Layers.projectileColliderMask))
                 {
                     var collider = hit.collider.GetComponent<AttackableTargetCollider>();
                     if (collider != null)
-                        newAttackableTargetPoint = collider.attackPoint;
+                        newHoveredTarget = collider.target;
                 }
 
-                if (newAttackableTargetPoint != _curAttackableTargetPoint)
+                if (newHoveredTarget != _curHoveredTarget)
                 {
-                    _curAttackableTargetPoint = newAttackableTargetPoint;
-                    if (onCurAttackableTargetPointChanged != null)
-                        onCurAttackableTargetPointChanged(_curAttackableTargetPoint);
+                    _curHoveredTarget = newHoveredTarget;
+                    if (onAttackableTargetHovered != null)
+                        onAttackableTargetHovered(_curHoveredTarget);
                 }
             }
         }
@@ -222,13 +222,13 @@ public class UnitsManager : MonoBehaviour
         {
             if (_selectedUnits.Count > 0)
             {
-                if (_curAttackableTargetPoint != null)
+                if (_curHoveredTarget != null)
                 {
                     foreach (var kv in _selectedUnits)
                         if (kv.Value.attack != null)
-                            kv.Value.attack.SetTarget(_curAttackableTargetPoint);
-                    if (onAttackableTargetPointSelected != null)
-                        onAttackableTargetPointSelected(_curAttackableTargetPoint);
+                            kv.Value.attack.SetTarget(_curHoveredTarget);
+                    if (onAttackableTargetSelected != null)
+                        onAttackableTargetSelected(_curHoveredTarget);
                 }
                 else
                 {

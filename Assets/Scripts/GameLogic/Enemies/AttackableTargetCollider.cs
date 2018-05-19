@@ -3,7 +3,7 @@
 public class AttackableTargetCollider : MonoBehaviour
 {
     [SerializeField]
-    private AttackableTargetPoint _attackPoint;
+    private AttackableTarget _target;
 
-    public AttackableTargetPoint attackPoint { get { return _attackPoint; } }
+    public AttackableTarget target { get { return _target; } }
 }

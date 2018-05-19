@@ -2,7 +2,7 @@
 
 public class AircraftAttack : Attack
 {
-    const bool DrawDebugRays = false;
+    private const bool DrawDebugRays = false;
 
     [SerializeField]
     private Transform _gunPivot;
@@ -13,9 +13,9 @@ public class AircraftAttack : Attack
 
     private void Update()
     {
-        if (_targetPoint != null)
+        if (_target != null)
         {
-            Vector3 directionToTarget = _targetPoint.transform.position - transform.position;
+            Vector3 directionToTarget = _target.transform.position - transform.position;
             _gunPivot.rotation = ClampRotationAroundXAxis(Quaternion.LookRotation(directionToTarget));
 
             float angleY = _gunPivot.localEulerAngles.y;

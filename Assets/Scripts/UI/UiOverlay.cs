@@ -9,35 +9,35 @@ public class UiOverlay : Graphic, IBeginDragHandler, IDragHandler, IEndDragHandl
     [SerializeField]
     private RectTransform _selectionFrame;
     [SerializeField]
-    private RectTransform _attackableTargetPointer;
+    private RectTransform _hoveredTargetPointer;
     [SerializeField]
     private RectTransform _selectedTargetPointer;
 
-    private AttackableTargetPoint _curAttackableTargetPoint;
-    private AttackableTargetPoint _selectedTargetPoint;
+    private AttackableTarget _hoveredTarget;
+    private AttackableTarget _selectedTarget;
 
     protected override void Start()
     {
         base.Start();
 
         Game.unitsManager.onUnitsSelectionChanged += OnUnitsSelectionChanged;
-        Game.unitsManager.onCurAttackableTargetPointChanged += SetCurAttackableTargetPoint;
-        Game.unitsManager.onAttackableTargetPointSelected += SetSelectedTargetPoint;
+        Game.unitsManager.onAttackableTargetHovered += SetHoveredTarget;
+        Game.unitsManager.onAttackableTargetSelected += SetSelectedTarget;
     }
 
     private void Update()
     {
-        if (_attackableTargetPointer.gameObject.activeSelf)
+        if (_hoveredTargetPointer.gameObject.activeSelf)
         {
-            Vector2 pos = Camera.main.WorldToScreenPoint(_curAttackableTargetPoint.transform.position);
+            Vector2 pos = Camera.main.WorldToScreenPoint(_hoveredTarget.transform.position);
             float x = pos.x / _canvas.localScale.x;
             float y = pos.y / _canvas.localScale.y;
-            _attackableTargetPointer.anchoredPosition = new Vector2(x, y);
+            _hoveredTargetPointer.anchoredPosition = new Vector2(x, y);
         }
 
         if (_selectedTargetPointer.gameObject.activeSelf)
         {
-            Vector2 pos = Camera.main.WorldToScreenPoint(_selectedTargetPoint.transform.position);
+            Vector2 pos = Camera.main.WorldToScreenPoint(_selectedTarget.transform.position);
             float x = pos.x / _canvas.localScale.x;
             float y = pos.y / _canvas.localScale.y;
             _selectedTargetPointer.anchoredPosition = new Vector2(x, y);
@@ -46,22 +46,22 @@ public class UiOverlay : Graphic, IBeginDragHandler, IDragHandler, IEndDragHandl
 
     private void OnUnitsSelectionChanged(int selectedUnitsCount)
     {
-        SetSelectedTargetPoint(null);
+        SetSelectedTarget(null);
 
         if (selectedUnitsCount == 0)
-            SetCurAttackableTargetPoint(null);
+            SetHoveredTarget(null);
     }
 
-    private void SetCurAttackableTargetPoint(AttackableTargetPoint point)
+    private void SetHoveredTarget(AttackableTarget target)
     {
-        _curAttackableTargetPoint = point;
-        _attackableTargetPointer.gameObject.SetActive(_curAttackableTargetPoint != null);
+        _hoveredTarget = target;
+        _hoveredTargetPointer.gameObject.SetActive(_hoveredTarget != null);
     }
 
-    private void SetSelectedTargetPoint(AttackableTargetPoint point)
+    private void SetSelectedTarget(AttackableTarget target)
     {
-        _selectedTargetPoint = point;
-        _selectedTargetPointer.gameObject.SetActive(point != null);
+        _selectedTarget = target;
+        _selectedTargetPointer.gameObject.SetActive(target != null);
     }
 
     public void OnBeginDrag(PointerEventData eventData)

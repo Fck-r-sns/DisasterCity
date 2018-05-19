@@ -9,14 +9,14 @@ public class TankAttack : Attack
 
     void Update()
     {
-        if (_targetPoint != null)
+        if (_target != null)
         {
-            Vector3 towerDirection = _targetPoint.transform.position - transform.position;
+            Vector3 towerDirection = _target.transform.position - transform.position;
             towerDirection.y = 0f;
             _towerPivot.rotation = Quaternion.LookRotation(towerDirection);
 
             Vector3 gunDirection = transform.forward;
-            float angle = -Mathf.Rad2Deg * Mathf.Atan((_targetPoint.transform.position.y - transform.position.y) / towerDirection.magnitude);
+            float angle = -Mathf.Rad2Deg * Mathf.Atan((_target.transform.position.y - transform.position.y) / towerDirection.magnitude);
             _gunPivot.localEulerAngles = new Vector3(angle, 0f, 0f);
 
             if (IsLoaded() && IsTargetInLineOfSight())

@@ -1,8 +1,11 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public abstract class Attack : UnitComponent
 {
-    const float SphereCastProjectileRadiusCoef = 1.1f;
+    private const float SphereCastProjectileRadiusCoef = 1.1f;
+
+    public event Action<AttackableTarget> onTargetChanged;
 
     [SerializeField]
     private float _reloadTime = 3f;
@@ -15,12 +18,14 @@ public abstract class Attack : UnitComponent
     [SerializeField]
     protected Transform _shootingPoint;
 
-    protected AttackableTargetPoint _targetPoint;
+    protected AttackableTarget _target;
     private float _lastShotTime;
 
-    public void SetTarget(AttackableTargetPoint targetPoint)
+    public void SetTarget(AttackableTarget target)
     {
-        _targetPoint = targetPoint;
+        _target = target;
+        if (onTargetChanged != null)
+            onTargetChanged(_target);
     }
 
     protected bool IsLoaded()
@@ -30,7 +35,7 @@ public abstract class Attack : UnitComponent
 
     protected bool IsTargetInLineOfSight()
     {
-        if (_targetPoint == null)
+        if (_target == null)
             return false;
 
         Ray ray = new Ray(_shootingPoint.position, _shootingPoint.forward);
@@ -49,7 +54,7 @@ public abstract class Attack : UnitComponent
                 minDistance = hit.distance;
             }
             var targetCollider = hit.collider.GetComponent<AttackableTargetCollider>();
-            if (targetCollider != null && targetCollider.attackPoint == _targetPoint)
+            if (targetCollider != null && targetCollider.target == _target)
                 targetInLineOfSight = true;
         }
         return targetInLineOfSight && nearestHitLayer == Defines.Layers.projectileColliderLayer;

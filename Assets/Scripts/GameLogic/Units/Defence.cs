@@ -6,7 +6,7 @@ public class Defence : UnitComponent
     public event Action onDestroyed;
 
     [SerializeField]
-    GameObject[] _explosionsPrefabs;
+    private GameObject[] _explosionsPrefabs;
 
     public void ReceiveAttack()
     {

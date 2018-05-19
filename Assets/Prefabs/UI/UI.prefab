@@ -836,7 +836,7 @@ GameObject:
   - component: {fileID: 222834653467971450}
   - component: {fileID: 114987191877382726}
   m_Layer: 5
-  m_Name: SelectionArea
+  m_Name: Overlay
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1058,7 +1058,7 @@ GameObject:
   - component: {fileID: 222976591878781550}
   - component: {fileID: 114259396201246748}
   m_Layer: 5
-  m_Name: AttackableTargetPointer
+  m_Name: HoveredTargetPointer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4188,7 +4188,7 @@ MonoBehaviour:
   m_RaycastTarget: 1
   _canvas: {fileID: 224626242816294970}
   _selectionFrame: {fileID: 224935486840831306}
-  _attackableTargetPointer: {fileID: 224588923967275980}
+  _hoveredTargetPointer: {fileID: 224588923967275980}
   _selectedTargetPointer: {fileID: 224315474408666442}
 --- !u!114 &114988300825530706
 MonoBehaviour:
