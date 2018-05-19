@@ -17,8 +17,9 @@ public class UnitsManager : MonoBehaviour
 
     public event Action<int> onUnitsCreatedCountChanged;
     public event Action<int> onUnitsLostCountChanged;
-    public event Action onUnitsSelectionBecameEmpty;
+    public event Action<int> onUnitsSelectionChanged;
     public event Action<AttackableTargetPoint> onCurAttackableTargetPointChanged;
+    public event Action<AttackableTargetPoint> onAttackableTargetPointSelected;
 
     Dictionary<Defines.UnitType, UnitsProvider> _unitsProviders = new Dictionary<Defines.UnitType, UnitsProvider>();
     Dictionary<Defines.AbilityType, AbilityProvider> _abilitiesProviders = new Dictionary<Defines.AbilityType, AbilityProvider>();
@@ -109,13 +110,15 @@ public class UnitsManager : MonoBehaviour
     void AddUnitToSelection(Unit unit)
     {
         _selectedUnits[unit.id] = unit;
+        if (onUnitsSelectionChanged != null)
+            onUnitsSelectionChanged(_selectedUnits.Count);
     }
 
     void RemoveUnitFromSelection(Unit unit)
     {
         _selectedUnits.Remove(unit.id);
-        if (_selectedUnits.Count == 0 && onUnitsSelectionBecameEmpty != null)
-            onUnitsSelectionBecameEmpty();
+        if (onUnitsSelectionChanged != null)
+            onUnitsSelectionChanged(_selectedUnits.Count);
     }
 
     void ResetSelection()
@@ -123,8 +126,8 @@ public class UnitsManager : MonoBehaviour
         foreach (var kv in _selectedUnits)
             kv.Value.SetSelected(false);
         _selectedUnits.Clear();
-        if (onUnitsSelectionBecameEmpty != null)
-            onUnitsSelectionBecameEmpty();
+        if (onUnitsSelectionChanged != null)
+            onUnitsSelectionChanged(_selectedUnits.Count);
     }
 
     void Update()
@@ -224,6 +227,8 @@ public class UnitsManager : MonoBehaviour
                     foreach (var kv in _selectedUnits)
                         if (kv.Value.attack != null)
                             kv.Value.attack.SetTarget(_curAttackableTargetPoint.transform);
+                    if (onAttackableTargetPointSelected != null)
+                        onAttackableTargetPointSelected(_curAttackableTargetPoint);
                 }
                 else
                 {
