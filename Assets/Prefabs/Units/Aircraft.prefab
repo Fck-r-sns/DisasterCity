@@ -525,5 +525,5 @@ MonoBehaviour:
     type: 2}
   _shootingPoint: {fileID: 4208027191920182}
   _gunPivot: {fileID: 4834214928873454}
-  _maxGunLatitude: 70
-  _maxGunLongitude: 45
+  _maxGunLatitude: 45
+  _maxGunLongitude: 25

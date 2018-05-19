@@ -35,7 +35,7 @@ public class AircraftAttack : Attack
             Debug.DrawRay(_shootingPoint.transform.position, _shootingPoint.transform.forward * 500f, Color.red);
             Transform t = _gunPivot.parent;
             Debug.DrawRay(t.position, t.forward * 500f);
-            int totalRays = 10;
+            int totalRays = 5;
             for (int i = 0; i < totalRays; i++)
             {
                 float rate = (float)i / (totalRays - 1);
