@@ -226,6 +226,10 @@ public class DragonController : MonoBehaviour
             float minDistance = float.MaxValue;
             foreach (var kv in _units)
             {
+                // Todo: Make it possible to attack flying units
+                if (kv.Value.movement.isFlying)
+                    continue;
+
                 float dst = Vector3.Distance(transform.position, kv.Value.transform.position);
                 if (nearestUnit == null || dst < minDistance)
                 {

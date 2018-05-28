@@ -13,6 +13,9 @@ public class AircraftAttack : Attack
 
     private void Update()
     {
+        if (Game.isPaused)
+            return;
+
         if (_target != null)
         {
             Vector3 directionToTarget = _target.transform.position - transform.position;

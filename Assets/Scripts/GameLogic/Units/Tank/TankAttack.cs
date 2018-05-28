@@ -9,6 +9,9 @@ public class TankAttack : Attack
 
     void Update()
     {
+        if (Game.isPaused)
+            return;
+
         if (_target != null)
         {
             Vector3 towerDirection = _target.transform.position - transform.position;

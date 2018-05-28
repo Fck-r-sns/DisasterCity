@@ -26,7 +26,8 @@ public class UiCallUnits : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        Game.instance.SetGameMode(Game.Mode.CallUnits, _unitType);
+        if (_unitsProvider.unitsCount > 0)
+            Game.instance.SetGameMode(Game.Mode.CallUnits, _unitType);
     }
 
     public void OnPointerEnter(PointerEventData eventData)

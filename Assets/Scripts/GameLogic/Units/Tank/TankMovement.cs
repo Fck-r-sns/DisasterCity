@@ -49,6 +49,9 @@ public class TankMovement : Movement
 
     void Update()
     {
+        if (Game.isPaused)
+            return;
+
         if (_targetPosition.HasValue)
         {
             if (Mathf.Approximately((transform.position - _targetPosition.Value).sqrMagnitude, 0f))

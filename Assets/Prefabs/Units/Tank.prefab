@@ -1833,6 +1833,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c81e5b4eb88a4df41bcee4b64821220b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _isFlying: 0
   _speed: 10
   _angularSpeed: 120
 --- !u!195 &195162951402993586

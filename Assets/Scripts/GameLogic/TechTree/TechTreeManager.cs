@@ -44,19 +44,18 @@ public class TechTreeManager : MonoBehaviour
     private void Awake()
     {
         AddNode(new TechTreeNode(TechTreeNodeId.City, "Disaster city", "The city itself", 0f));
-        AddNode(new TechTreeNode(TechTreeNodeId.TankBase, "Army base", "Provides tanks", 10f));
-        AddNode(new TechTreeNode(TechTreeNodeId.TankBaseUpgradeProductionTime, "Army facility", "Decreases tanks' production time", 30f));
-        AddNode(new TechTreeNode(TechTreeNodeId.TankBaseUpgradeCapacity, "Army depot", "Increases max capacity of army base", 30f));
-        AddNode(new TechTreeNode(TechTreeNodeId.TankBaseUpgradeDeploymentTime, "Army logistics centre", "Decreases tanks' deployment time", 30f));
-        AddNode(new TechTreeNode(TechTreeNodeId.AviaBase, "Avia base", "Provides aircrafts", 20f));
-        AddNode(new TechTreeNode(TechTreeNodeId.AviaBaseUpgradeProductionTime, "Avia facility", "Decreases aircrafts' production time", 30f));
-        AddNode(new TechTreeNode(TechTreeNodeId.AviaBaseUpgradeCapacity, "Avia depot", "Increases max capacity of avia base", 30f));
-        AddNode(new TechTreeNode(TechTreeNodeId.AviaBaseUpgradeDeploymentTime, "Avia logistics centre", "Decreases aircrafts' deployment time", 30f));
-        //AddNode(new TechTreeNode(TechTreeNodeId.ArtilleryBase, "Artillery base", "Provides artillery strike", 30f));
-        AddNode(new TechTreeNode(TechTreeNodeId.ArtilleryBase, "Artillery base", "Provides artillery strike", 3f));
-        AddNode(new TechTreeNode(TechTreeNodeId.ArtilleryBaseUpgradeDelayTime, "Artillery aiming centre", "Descreases delay before artillery strike", 40f));
-        AddNode(new TechTreeNode(TechTreeNodeId.ArtilleryBaseUpgradeReloadTime, "Artillery logistics", "Descreases artillery strike's reload time", 50f));
-        AddNode(new TechTreeNode(TechTreeNodeId.ArtilleryBaseUpgradeDamage, "Artillery ammo facility", "Increases artillery strike's damage", 40f));
+        AddNode(new TechTreeNode(TechTreeNodeId.TankBase, "Army base", "Provides tanks", 2f));
+        AddNode(new TechTreeNode(TechTreeNodeId.TankBaseUpgradeProductionTime, "Army facility", "Decreases tanks' production time", 15f));
+        AddNode(new TechTreeNode(TechTreeNodeId.TankBaseUpgradeCapacity, "Army depot", "Increases max capacity of army base", 15f));
+        AddNode(new TechTreeNode(TechTreeNodeId.TankBaseUpgradeDeploymentTime, "Army logistics centre", "Decreases tanks' deployment time", 15f));
+        AddNode(new TechTreeNode(TechTreeNodeId.AviaBase, "Avia base", "Provides aircrafts", 2f));
+        AddNode(new TechTreeNode(TechTreeNodeId.AviaBaseUpgradeProductionTime, "Avia facility", "Decreases aircrafts' production time", 15f));
+        AddNode(new TechTreeNode(TechTreeNodeId.AviaBaseUpgradeCapacity, "Avia depot", "Increases max capacity of avia base", 15f));
+        AddNode(new TechTreeNode(TechTreeNodeId.AviaBaseUpgradeDeploymentTime, "Avia logistics centre", "Decreases aircrafts' deployment time", 15f));
+        AddNode(new TechTreeNode(TechTreeNodeId.ArtilleryBase, "Artillery base", "Provides artillery strike", 2f));
+        AddNode(new TechTreeNode(TechTreeNodeId.ArtilleryBaseUpgradeDelayTime, "Artillery aiming centre", "Descreases delay before artillery strike", 20f));
+        AddNode(new TechTreeNode(TechTreeNodeId.ArtilleryBaseUpgradeReloadTime, "Artillery logistics", "Descreases artillery strike's reload time", 25f));
+        AddNode(new TechTreeNode(TechTreeNodeId.ArtilleryBaseUpgradeDamage, "Artillery ammo facility", "Increases artillery strike's damage", 20f));
 
         ConnectNodes(TechTreeNodeId.City, TechTreeNodeId.TankBase);
         ConnectNodes(TechTreeNodeId.TankBase, TechTreeNodeId.TankBaseUpgradeProductionTime);

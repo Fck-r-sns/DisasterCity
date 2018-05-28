@@ -193,6 +193,7 @@ GameObject:
   - component: {fileID: 33513561165635244}
   - component: {fileID: 64244901767569054}
   - component: {fileID: 23797672177009752}
+  - component: {fileID: 114772739026315632}
   m_Layer: 15
   m_Name: Zone
   m_TagString: Untagged
@@ -836,19 +837,20 @@ MonoBehaviour:
   _unitType: 1
   _activationTechTreeNode: 5
   _initialUnitsCount: 1
-  _initialUnitsDamage: 100
+  _initialUnitsDamage: 20
   _initialMaxUnitsCount: 3
   _maxUnitsCountUpgradeValue: 2
   _maxUnitsCountTechTreeNode: 7
   _initialProductionTime: 20
   _productionTimeUpgradeValue: 10
   _productionTimeTechTreeNode: 6
-  _initialDeploymentTime: 0
-  _deploymentTimeUpgradeValue: 0
+  _initialDeploymentTime: 8
+  _deploymentTimeUpgradeValue: 4
   _deploymentTimeTechTreeNode: 0
   _deploymentZone: {fileID: 1098939747213424}
-  _unitsFormationGap: 0
-  _unitPrefab: {fileID: 0}
+  _unitsFormationGap: 30
+  _unitPrefab: {fileID: 1404073457575064, guid: d256a613b68560f44a3c5a5357ede630,
+    type: 2}
 --- !u!114 &114213480587977348
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -906,11 +908,11 @@ MonoBehaviour:
   _initialDelayTime: 2
   _delayTimeUpgradeValue: 1
   _delayTimeTechTreeNode: 11
-  _initialReloadTime: 60
-  _reloadTimeUpgradeValue: 30
+  _initialReloadTime: 20
+  _reloadTimeUpgradeValue: 10
   _reloadTimeTechTreeNode: 10
-  _initialDamage: 300
-  _damageUpgradeValue: 200
+  _initialDamage: 500
+  _damageUpgradeValue: 400
   _damageTechTreeNode: 12
   _affectedAreaMarker: {fileID: 1015063248537970}
   _abilityLogic: {fileID: 114896056555984580}
@@ -956,6 +958,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _direction: {x: -1, y: 0, z: 0}
+--- !u!114 &114772739026315632
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1856727389870398}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63e89ac8327bca644b9990a84bf4c53b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _direction: {x: 0, y: 0, z: 1}
 --- !u!114 &114802871204530886
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1004,15 +1018,15 @@ MonoBehaviour:
   _unitType: 0
   _activationTechTreeNode: 1
   _initialUnitsCount: 5
-  _initialUnitsDamage: 100
+  _initialUnitsDamage: 150
   _initialMaxUnitsCount: 10
   _maxUnitsCountUpgradeValue: 5
   _maxUnitsCountTechTreeNode: 3
   _initialProductionTime: 5
   _productionTimeUpgradeValue: 2
   _productionTimeTechTreeNode: 2
-  _initialDeploymentTime: 10
-  _deploymentTimeUpgradeValue: 5
+  _initialDeploymentTime: 5
+  _deploymentTimeUpgradeValue: 3
   _deploymentTimeTechTreeNode: 0
   _deploymentZone: {fileID: 1189427092897388}
   _unitsFormationGap: 10
@@ -1033,7 +1047,7 @@ MonoBehaviour:
   _projectileSpawnHeightMin: 100
   _projectileSpawnHeightMax: 300
   _projectileSpeed: 200
-  _projectilePrefab: {fileID: 114217168415565930, guid: aa30859e8191bae4cb265e1f26a3f302,
+  _projectilePrefab: {fileID: 114217168415565930, guid: 6395d185c1645504c8031aae35f36fb7,
     type: 2}
 --- !u!114 &114919005550520500
 MonoBehaviour:

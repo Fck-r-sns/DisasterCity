@@ -84,6 +84,9 @@ public class AircraftMovement : Movement
 
     private void Update()
     {
+        if (Game.isPaused)
+            return;
+
         Vector3 toMovementTarget = _movementTarget - transform.position;
         if (_attackTarget != null)
         {

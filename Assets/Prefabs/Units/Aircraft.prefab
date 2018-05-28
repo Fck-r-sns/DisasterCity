@@ -468,6 +468,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1a9eb7271f3e844d8a4571af0da57e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _isFlying: 1
   _height: 70
   _minSpeed: 10
   _maxSpeed: 70

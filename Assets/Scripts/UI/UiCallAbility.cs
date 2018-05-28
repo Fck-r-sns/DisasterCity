@@ -25,7 +25,8 @@ public class UiCallAbility : MonoBehaviour, IPointerClickHandler, IPointerEnterH
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        Game.instance.SetGameMode(Game.Mode.CallAbility, _abilityType);
+        if (_abilityProvider.isLoaded)
+            Game.instance.SetGameMode(Game.Mode.CallAbility, _abilityType);
     }
 
     public void OnPointerEnter(PointerEventData eventData)
