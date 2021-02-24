@@ -1,0 +1,11 @@
+# Default ignored files
+/shelf/
+/workspace.xml
+# Rider ignored files
+/contentModel.xml
+/projectSettingsUpdater.xml
+/.idea.DisasterCityRtsPrototype.iml
+/modules.xml
+# Datasource local storage ignored files
+/../../../../../../../:\Programming\Unity\DisasterCityRtsPrototype\.idea\.idea.DisasterCityRtsPrototype\.idea/dataSources/
+/dataSources.local.xml

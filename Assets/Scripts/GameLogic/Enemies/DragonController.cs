@@ -219,9 +219,10 @@ public class DragonController : MonoBehaviour
 
     public void ProcessAttackUnitsState()
     {
-        if (Time.time - _lastTargetUpdateTime > TargetUpdatePeriod)
+        float curTime = Time.time;
+        if (curTime - _lastTargetUpdateTime > TargetUpdatePeriod)
         {
-            _lastTargetUpdateTime = Time.time;
+            _lastTargetUpdateTime = curTime;
             Unit nearestUnit = null;
             float minDistance = float.MaxValue;
             foreach (var kv in _units)
@@ -382,6 +383,7 @@ public class DragonController : MonoBehaviour
     {
         _animator.SetTrigger("Scream");
         _isScreaming = true;
+        _isDefending = false;
         if (!_animator.GetCurrentAnimatorStateInfo(0).IsName("Scream"))
             yield return new WaitWhile(() => !_animator.GetCurrentAnimatorStateInfo(0).IsName("Scream"));
         yield return new WaitWhile(() => _animator.GetCurrentAnimatorStateInfo(0).IsName("Scream"));
@@ -393,6 +395,7 @@ public class DragonController : MonoBehaviour
     {
         _animator.SetTrigger("Defend");
         _isDefending = true;
+        _isScreaming = false;
         if (!_animator.GetCurrentAnimatorStateInfo(1).IsName("Defend"))
             yield return new WaitWhile(() => !_animator.GetCurrentAnimatorStateInfo(1).IsName("Defend"));
         yield return new WaitWhile(() => _animator.GetCurrentAnimatorStateInfo(1).IsName("Defend"));
